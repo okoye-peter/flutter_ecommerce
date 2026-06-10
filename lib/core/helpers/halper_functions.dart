@@ -1,0 +1,92 @@
+import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
+import 'package:intl/intl.dart';
+
+class THelperFunctions {
+  static Color? getColor(String value) {
+    if (value.toLowerCase() == 'green') {
+      return Colors.green;
+    } else if (value.toLowerCase() == 'red') {
+      return Colors.red;
+    } else if (value.toLowerCase() == 'blue') {
+      return Colors.blue;
+    } else if (value.toLowerCase() == 'pink') {
+      return Colors.pink;
+    } else if (value.toLowerCase() == 'grey') {
+      return Colors.grey;
+    } else if (value.toLowerCase() == 'purple') {
+      return Colors.purple;
+    } else if (value.toLowerCase() == 'black') {
+      return Colors.black;
+    } else if (value.toLowerCase() == 'white') {
+      return Colors.white;
+    } else if (value.toLowerCase() == 'brown') {
+      return Colors.brown;
+    } else if (value.toLowerCase() == 'teal') {
+      return Colors.teal;
+    } else if (value.toLowerCase() == 'indigo') {
+      return Colors.indigo;
+    } else {
+      return null;
+    }
+  }
+
+  static void showSnackBar(String message) {
+    ScaffoldMessenger.of(
+      Get.context!,
+    ).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  static void showAlert(String title, String message) {
+    showDialog(
+      context: Get.context!,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Ok'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static String truncateText(String text, int maxLength) {
+    if (text.length <= maxLength) {
+      return text;
+    }
+    return "${text.substring(0, maxLength)}...";
+  }
+
+  static bool isDarkMode(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark;
+  }
+
+  static Size screenSize(BuildContext context) {
+    return MediaQuery.of(context).size;
+  }
+
+  static double screenHeight(BuildContext context) {
+    return MediaQuery.of(context).size.height;
+  }
+
+  static double screenWidth(BuildContext context) {
+    return MediaQuery.of(context).size.width;
+  }
+
+  static String getFormattedDate(
+    DateTime date, {
+    String format = 'dd MMM, yyyy',
+  }) {
+    return DateFormat(format).format(date);
+  }
+
+  static List<T> removeDuplicates<T>(List<T> list) {
+    return list.toSet().toList();
+  }
+
+}

@@ -1,20 +1,18 @@
-import 'package:ecommerce/core/theme/theme.dart';
+import 'package:ecommerce/app.dart';
+// import 'package:ecommerce/core/constants/colors.dart';
+// import 'package:ecommerce/core/theme/theme.dart';
+import 'package:ecommerce/core/utils/local_storage/local_storage.dart';
+import 'package:ecommerce/core/utils/local_storage/secure_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-void main() {
-  
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Future.wait([
+    Get.putAsync(() => LocalStorage().init()),
+    Get.putAsync(() => SecureStorage().init()),
+  ]);
+
   runApp(const App());
-}
-
-class App extends StatelessWidget {
-  const App({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      themeMode: ThemeMode.system,
-      theme: TAppTheme.lightTheme,
-      darkTheme: TAppTheme.darkTheme,
-    );
-  }
 }
