@@ -1,11 +1,11 @@
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/constants/text_strings.dart';
+import 'package:ecommerce/core/router/app_router.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class TLoginForm extends StatelessWidget {
-  const TLoginForm({
-    super.key,
-  });
+  const TLoginForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,7 @@ class TLoginForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(
-                onPressed: () {},
+                onPressed: () => context.push(AppRoutes.signup),
                 child: Text(TTexts.createAccount),
               ),
             ),

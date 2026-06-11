@@ -3,8 +3,8 @@ import 'package:ecommerce/core/constants/image_strings.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:flutter/material.dart';
 
-class TLoginSocialButtons extends StatelessWidget {
-  const TLoginSocialButtons({
+class TFormSocialButtons extends StatelessWidget {
+  const TFormSocialButtons({
     super.key,
   });
 
