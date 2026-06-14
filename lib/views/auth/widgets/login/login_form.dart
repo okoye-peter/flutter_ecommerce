@@ -47,7 +47,9 @@ class TLoginForm extends StatelessWidget {
                 ),
                 // Forgot Password
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.push(AppRoutes.forgotPassword);
+                  },
                   child: const Text(TTexts.forgetPassword),
                 ),
               ],
@@ -59,7 +61,9 @@ class TLoginForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.go(AppRoutes.navigation);
+                },
                 child: Text(TTexts.signIn),
               ),
             ),

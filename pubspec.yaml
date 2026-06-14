@@ -71,6 +71,7 @@ flutter:
     - assets/images/onboarding_images/
     - assets/images/verify_email_images/
     - assets/images/success_images/
+    - assets/images/forgot_password/
     - assets/images/
     - assets/icons/
     - assets/logos/

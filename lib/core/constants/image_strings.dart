@@ -14,6 +14,9 @@ class TImages {
   // -- Verify Email Images
   static const String emailVerified = "assets/images/verify_email_images/email_verified.gif";
 
+  // -- Forgot Password Images
+  static const String forgotPassword = "assets/images/forgot_password/forgot_password.gif";
+
   // -- Success Images
   static const String success = "assets/images/success_images/success.gif";
   static const String successIllustrator = "assets/images/success_images/success_illustrator.gif";
