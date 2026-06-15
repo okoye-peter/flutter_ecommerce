@@ -1,52 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 
 class THelperFunctions {
   static Color? getColor(String value) {
-    if (value.toLowerCase() == 'green') {
-      return Colors.green;
-    } else if (value.toLowerCase() == 'red') {
-      return Colors.red;
-    } else if (value.toLowerCase() == 'blue') {
-      return Colors.blue;
-    } else if (value.toLowerCase() == 'pink') {
-      return Colors.pink;
-    } else if (value.toLowerCase() == 'grey') {
-      return Colors.grey;
-    } else if (value.toLowerCase() == 'purple') {
-      return Colors.purple;
-    } else if (value.toLowerCase() == 'black') {
-      return Colors.black;
-    } else if (value.toLowerCase() == 'white') {
-      return Colors.white;
-    } else if (value.toLowerCase() == 'brown') {
-      return Colors.brown;
-    } else if (value.toLowerCase() == 'teal') {
-      return Colors.teal;
-    } else if (value.toLowerCase() == 'indigo') {
-      return Colors.indigo;
-    } else {
-      return null;
+    switch (value.toLowerCase()) {
+      case 'green':   return Colors.green;
+      case 'red':     return Colors.red;
+      case 'blue':    return Colors.blue;
+      case 'pink':    return Colors.pink;
+      case 'grey':    return Colors.grey;
+      case 'purple':  return Colors.purple;
+      case 'black':   return Colors.black;
+      case 'white':   return Colors.white;
+      case 'brown':   return Colors.brown;
+      case 'teal':    return Colors.teal;
+      case 'indigo':  return Colors.indigo;
+      default:        return null;
     }
   }
 
-  static void showSnackBar(String message) {
-    ScaffoldMessenger.of(
-      Get.context!,
-    ).showSnackBar(SnackBar(content: Text(message)));
+  static void showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 
-  static void showAlert(String title, String message) {
+  static void showAlert(BuildContext context, String title, String message) {
     showDialog(
-      context: Get.context!,
-      builder: (BuildContext context) {
+      context: context,
+      builder: (BuildContext ctx) {
         return AlertDialog(
           title: Text(title),
           content: Text(message),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.of(ctx).pop(),
               child: const Text('Ok'),
             ),
           ],
@@ -56,27 +44,21 @@ class THelperFunctions {
   }
 
   static String truncateText(String text, int maxLength) {
-    if (text.length <= maxLength) {
-      return text;
-    }
-    return "${text.substring(0, maxLength)}...";
+    if (text.length <= maxLength) return text;
+    return '${text.substring(0, maxLength)}...';
   }
 
   static bool isDarkMode(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark;
   }
 
-  static Size screenSize(BuildContext context) {
-    return MediaQuery.of(context).size;
-  }
+  static Size screenSize(BuildContext context) => MediaQuery.of(context).size;
 
-  static double screenHeight(BuildContext context) {
-    return MediaQuery.of(context).size.height;
-  }
+  static double screenHeight(BuildContext context) =>
+      MediaQuery.of(context).size.height;
 
-  static double screenWidth(BuildContext context) {
-    return MediaQuery.of(context).size.width;
-  }
+  static double screenWidth(BuildContext context) =>
+      MediaQuery.of(context).size.width;
 
   static String getFormattedDate(
     DateTime date, {
@@ -85,8 +67,5 @@ class THelperFunctions {
     return DateFormat(format).format(date);
   }
 
-  static List<T> removeDuplicates<T>(List<T> list) {
-    return list.toSet().toList();
-  }
-
+  static List<T> removeDuplicates<T>(List<T> list) => list.toSet().toList();
 }

@@ -2,15 +2,12 @@ import 'package:ecommerce/core/constants/image_strings.dart';
 import 'package:ecommerce/core/constants/text_strings.dart';
 import 'package:ecommerce/models/onboarding_model.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class OnboardingController extends GetxController {
-  static OnboardingController get instance => Get.find();
+class OnboardingNotifier extends Notifier<int> {
+  late final PageController pageController;
 
-  final pageController = PageController();
-  final currentPageIndex = 0.obs;
-
-  final List<OnboardingModel> pages = const [
+  static const List<OnboardingModel> pages = [
     OnboardingModel(
       image: TImages.onBoarding1,
       title: TTexts.onBoardingTitle1,
@@ -29,15 +26,16 @@ class OnboardingController extends GetxController {
   ];
 
   @override
-  void onClose() {
-    pageController.dispose();
-    super.onClose();
+  int build() {
+    pageController = PageController();
+    ref.onDispose(pageController.dispose);
+    return 0;
   }
 
-  void updatePageIndicator(int index) => currentPageIndex.value = index;
+  void updatePageIndicator(int index) => state = index;
 
   void dotNavigatorClick(int index) {
-    currentPageIndex.value = index;
+    state = index;
     pageController.animateToPage(
       index,
       duration: const Duration(milliseconds: 300),
@@ -45,10 +43,10 @@ class OnboardingController extends GetxController {
     );
   }
 
-  bool get isLastPage => currentPageIndex.value == pages.length - 1;
+  bool get isLastPage => state == pages.length - 1;
 
   void nextPage() {
-    currentPageIndex.value++;
+    state++;
     pageController.nextPage(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
@@ -56,7 +54,11 @@ class OnboardingController extends GetxController {
   }
 
   void skipPage() {
-    currentPageIndex.value = pages.length - 1;
+    state = pages.length - 1;
     pageController.jumpToPage(pages.length - 1);
   }
 }
+
+final onboardingProvider = NotifierProvider<OnboardingNotifier, int>(
+  OnboardingNotifier.new,
+);

@@ -1,7 +1,6 @@
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/constants/text_strings.dart';
 import 'package:ecommerce/core/router/app_router.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

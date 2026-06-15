@@ -3,9 +3,13 @@ import 'package:ecommerce/core/constants/image_strings.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/widgets/curved_edges/circular_container.dart';
 import 'package:ecommerce/core/widgets/curved_edges/curved_edge_widget.dart';
+import 'package:ecommerce/core/widgets/products/product_card_vertical.dart';
+import 'package:ecommerce/core/widgets/products/product_grid_view.dart';
 import 'package:ecommerce/core/widgets/search/search_container.dart';
 import 'package:ecommerce/core/widgets/texts/section_heading.dart';
 import 'package:ecommerce/views/home/widgets/home_app_bar.dart';
+import 'package:ecommerce/views/home/widgets/home_categories.dart';
+import 'package:ecommerce/views/home/widgets/promo_slider.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -26,7 +30,7 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: TSizes.spaceBtwSections),
 
                   // search bar
-                  TSearchContainer(text: 'Search in store'),
+                  const TSearchContainer(text: 'Search in store'),
                   const SizedBox(height: TSizes.spaceBtwSections),
 
                   // categories
@@ -38,42 +42,38 @@ class HomeScreen extends StatelessWidget {
                         TSectionHeading(
                           title: 'Popular Categories',
                           showActionButton: false,
+                          textColor: TColors.white,
+                          onPressed: () {},
                         ),
-                        const SizedBox(height: TSizes.spaceBtwItem),
+                        SizedBox(height: TSizes.spaceBtwItem),
 
                         // categories
-                        SizedBox(
-                          height: 80,
-                          child: ListView.builder(
-                            itemCount: 6,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (_, index) {
-                              return Column(
-                                children: [
-                                  Container(
-                                    width: 56,
-                                    height: 56,
-                                    padding: EdgeInsets.all(TSizes.sm),
-                                    decoration: BoxDecoration(
-                                      color: TColors.white,
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    child: Center(
-                                      child: Image(image: 
-                                      AssetImage(TImages.sportIcon), 
-                                      fit: BoxFit.cover, 
-                                      color: TColors.dark,
-                                      )
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
+                        THomeCategories(),
                       ],
                     ),
                   ),
+                ],
+              ),
+            ),
+
+            // carousel
+            Padding(
+              padding: const EdgeInsets.all(TSizes.defaultSpace),
+              child: Column(
+                children: [
+                  const TPromoSlider(
+                    banners: [
+                      TImages.promoBanner1,
+                      TImages.promoBanner2,
+                      TImages.promoBanner3,
+                      TImages.promoBanner6,
+                    ],
+                  ),
+
+                  const SizedBox(height: TSizes.spaceBtwSections),
+
+                  // products
+                  TProductGridView(itemBuilder: (BuildContext context, int index) => TProductCardVertical(),)
                 ],
               ),
             ),

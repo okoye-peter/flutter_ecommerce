@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class TDeviceUtils {
@@ -98,18 +97,14 @@ class TDeviceUtils {
     try {
       final result = await InternetAddress.lookup('example.com');
       return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-    } on SocketException catch (e) {
+    } on SocketException catch (_) {
       return false;
     }
   }
 
-  static bool isIOS() {
-    return Platform.isIOS;
-  }
+  static bool isIOS() => Platform.isIOS;
 
-  static bool isAndroid() {
-    return Platform.isAndroid;
-  }
+  static bool isAndroid() => Platform.isAndroid;
 
   static void launchUrl(String url) async {
     if (await canLaunchUrlString(url)) {

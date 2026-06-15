@@ -5,27 +5,29 @@ import 'package:ecommerce/core/router/app_router.dart';
 import 'package:ecommerce/core/utils/device/device_utility.dart';
 import 'package:ecommerce/viewmodels/auth/onboarding_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class OnboardingNextButton extends StatelessWidget {
+class OnboardingNextButton extends ConsumerWidget {
   const OnboardingNextButton({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final dark = THelperFunctions.isDarkMode(context);
-    final controller = OnboardingController.instance;
+    final notifier = ref.read(onboardingProvider.notifier);
+    final isLastPage = ref.watch(
+      onboardingProvider.select((i) => i == OnboardingNotifier.pages.length - 1),
+    );
+
     return Positioned(
       right: TSizes.defaultSpace,
       bottom: TDeviceUtils.getBottomNavigationBarHeight(),
       child: ElevatedButton(
-        onPressed: () => controller.isLastPage
-            ? context.go(AppRoutes.login)
-            : controller.nextPage(),
+        onPressed: () =>
+            isLastPage ? context.go(AppRoutes.login) : notifier.nextPage(),
         style: ElevatedButton.styleFrom(
           shape: const CircleBorder(),
           backgroundColor: dark ? TColors.primary : TColors.dark,
-          // elevation: 0,
-          // shadowColor: Colors.transparent,
           side: BorderSide(color: dark ? TColors.primary : TColors.dark),
         ),
         child: const Icon(Icons.arrow_forward_ios),

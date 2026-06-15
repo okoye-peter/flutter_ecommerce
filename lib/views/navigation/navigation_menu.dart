@@ -1,55 +1,48 @@
 import 'package:ecommerce/core/constants/colors.dart';
 import 'package:ecommerce/core/helpers/halper_functions.dart';
 import 'package:ecommerce/views/home/home.dart';
+import 'package:ecommerce/views/store/store.dart';
+import 'package:ecommerce/views/wishlists/wishlist.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NavigationMenuScreen extends StatefulWidget {
+final _navigationIndexProvider = StateProvider<int>((ref) => 0);
+
+class NavigationMenuScreen extends ConsumerWidget {
   const NavigationMenuScreen({super.key});
 
   @override
-  State<NavigationMenuScreen> createState() => _NavigationMenuScreenState();
-}
-
-class _NavigationMenuScreenState extends State<NavigationMenuScreen> {
-  @override
-  Widget build(BuildContext context) {
-    final controller = Get.put(NavigationController());
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedIndex = ref.watch(_navigationIndexProvider);
     final dark = THelperFunctions.isDarkMode(context);
 
+    final screens = [
+      const HomeScreen(),
+      const StoreScreen(),
+      const FavoriteScreen(),
+      Container(color: Colors.grey),
+    ];
+
     return Scaffold(
-      body: Obx(() => controller.screens[controller.selectedIndex.value]),
-      bottomNavigationBar: Obx(
-        () => NavigationBar(
-          selectedIndex: controller.selectedIndex.value,
-          onDestinationSelected: (index) =>
-              controller.selectedIndex.value = index,
-          backgroundColor: dark ? TColors.black : Colors.white,
-          indicatorColor: dark
-              ? TColors.white.withAlpha(26)
-              : TColors.black.withAlpha(26),
-          destinations: const [
-            NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-            NavigationDestination(icon: Icon(Icons.store), label: 'Store'),
-            NavigationDestination(
-              icon: Icon(Icons.favorite_border),
-              label: 'Wishlist',
-            ),
-            NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
-          ],
-        ),
+      body: screens[selectedIndex],
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: selectedIndex,
+        onDestinationSelected: (index) =>
+            ref.read(_navigationIndexProvider.notifier).state = index,
+        backgroundColor: dark ? TColors.black : Colors.white,
+        indicatorColor: dark
+            ? TColors.white.withAlpha(26)
+            : TColors.black.withAlpha(26),
+        destinations: const [
+          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+          NavigationDestination(icon: Icon(Icons.store), label: 'Store'),
+          NavigationDestination(
+            icon: Icon(Icons.favorite_border),
+            label: 'Wishlist',
+          ),
+          NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
+        ],
       ),
     );
   }
-}
-
-class NavigationController extends GetxController {
-  final Rx<int> selectedIndex = 0.obs;
-
-  final List<Widget> screens = [
-    HomeScreen(), // Home
-    Container(color: Colors.orange), // Store
-    Container(color: Colors.yellow), // Wishlist
-    Container(color: Colors.grey), // Profile
-  ];
 }

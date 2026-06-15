@@ -1,11 +1,8 @@
 import 'dart:convert';
 
-import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LocalStorage extends GetxService {
-  static LocalStorage get instance => Get.find();
-
+class LocalStorage {
   late final SharedPreferences _prefs;
 
   Future<LocalStorage> init() async {
@@ -14,7 +11,7 @@ class LocalStorage extends GetxService {
   }
 
   // ── Primitives ──────────────────────────────────────────────────────────────
-  
+
   Future<void> writeString(String key, String value) =>
       _prefs.setString(key, value);
 
@@ -63,8 +60,7 @@ class LocalStorage extends GetxService {
 
   static const _cartKey = 'cart_ids';
 
-  List<String> getCartIds() =>
-      _prefs.getStringList(_cartKey) ?? [];
+  List<String> getCartIds() => _prefs.getStringList(_cartKey) ?? [];
 
   int get cartCount => getCartIds().length;
 
@@ -88,8 +84,7 @@ class LocalStorage extends GetxService {
 
   static const _wishlistKey = 'wishlist_ids';
 
-  List<String> getWishlistIds() =>
-      _prefs.getStringList(_wishlistKey) ?? [];
+  List<String> getWishlistIds() => _prefs.getStringList(_wishlistKey) ?? [];
 
   int get wishlistCount => getWishlistIds().length;
 

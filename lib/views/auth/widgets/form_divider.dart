@@ -1,7 +1,6 @@
 import 'package:ecommerce/core/constants/colors.dart';
 import 'package:ecommerce/core/helpers/halper_functions.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class TFormDivider extends StatelessWidget {
   const TFormDivider({super.key, required this.dividerText});
@@ -11,6 +10,9 @@ class TFormDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = THelperFunctions.isDarkMode(context);
+    final text = dividerText.isEmpty
+        ? ''
+        : dividerText[0].toUpperCase() + dividerText.substring(1);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -23,10 +25,7 @@ class TFormDivider extends StatelessWidget {
             endIndent: 5,
           ),
         ),
-        Text(
-          dividerText.capitalize!,
-          style: Theme.of(context).textTheme.labelMedium,
-        ),
+        Text(text, style: Theme.of(context).textTheme.labelMedium),
         Flexible(
           child: Divider(
             color: dark ? TColors.darkGrey : TColors.grey,

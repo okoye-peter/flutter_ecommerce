@@ -20,4 +20,31 @@ class TImages {
   // -- Success Images
   static const String success = "assets/images/success_images/success.gif";
   static const String successIllustrator = "assets/images/success_images/success_illustrator.gif";
+
+  // -- Category Images
+  static const String categoryFood = "assets/images/categories/food_cat.jpeg";
+  static const String categorySport = "assets/images/categories/Sport.jpeg";
+
+  // -- Home Images
+  static const String promoBanner1 = "assets/images/home/promoBanner1.jpeg";
+  static const String promoBanner2 = "assets/images/home/promoBanner2.jpeg";
+  static const String promoBanner3 = "assets/images/home/promoBanner3.jpeg";
+  static const String promoBanner6 = "assets/images/home/promoBanner6.jpeg";
+
+  // -- Product Images
+  static const String productImage1 = "assets/images/products/40% OFF the Air Jordan Velocity Duffle Bags.jpeg";
+  static const String productImage2 = "assets/images/products/Best sounding and Most Comfortable Headphones for 2020.jpeg";
+  static const String productImage3 = "assets/images/products/Leichte Wanderschuhe mit Atmungsaktivem Design - Grau _ 11 [EU44].jpeg";
+  static const String productImage4 = "assets/images/products/Manfinity RSRT Men Random Palm Tree Print Shirt & Drawstring Waist Shorts Without Tee.jpeg";
+  static const String productImage5 = "assets/images/products/Men Short Sleeve Textured Shirt And Shorts Set, Summer.jpeg";
+  static const String productImage6 = "assets/images/products/Men.jpeg";
+  static const String productImage7 = "assets/images/products/Splash Eclipse Solar [38mm] - Black - Orange _ Stainless Steel.jpeg";
+  static const String productImage8 = "assets/images/products/Stanley Adventure Quencher Honest Review.jpeg";
+  static const String productImage9 = "assets/images/products/Timberland boots fashionstation 0608 2048.jpeg";
+  static const String productImage10 = "assets/images/products/Your vintage wears and short _DM us for yours _Limited stock _Available in all sìzes _S,M, L, XL, XXL _WhatsApp us here _+2349017695706.jpeg";
+  static const String productImage11 = "assets/images/products/_ (1).jpeg";
+  static const String productImage12 = "assets/images/products/_ (2).jpeg";
+  static const String productImage13 = "assets/images/products/_.jpeg";
+  static const String productImage14 = "assets/images/products/sneakers and face cap affordable.jpeg";
+
 }
