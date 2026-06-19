@@ -7,6 +7,7 @@ import 'package:ecommerce/core/widgets/images/rounded_image.dart';
 import 'package:ecommerce/core/widgets/icons/circular_icon.dart';
 import 'package:ecommerce/core/widgets/products/product_price_and_add_to_cart.dart';
 import 'package:ecommerce/core/widgets/products/rounded_container.dart';
+import 'package:ecommerce/core/widgets/texts/brand_title_text.dart';
 import 'package:ecommerce/core/widgets/texts/product_title_text.dart';
 import 'package:flutter/material.dart';
 
@@ -91,12 +92,7 @@ class TProductCardVertical extends StatelessWidget {
                   const SizedBox(height: TSizes.spaceBtwItem / 2),
                   Row(
                     children: [
-                      Text(
-                        'Nike',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: Theme.of(context).textTheme.labelMedium,
-                      ),
+                      TBrandTitleText(title: 'Nike'),
                       const SizedBox(width: TSizes.xs),
                       Icon(
                         Icons.check_circle,

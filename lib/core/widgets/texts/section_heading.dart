@@ -19,6 +19,7 @@ class TSectionHeading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
+      
       children: [
         Text(
           title,
@@ -26,6 +27,7 @@ class TSectionHeading extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
+        const Spacer(),
         if (showActionButton) TextButton(onPressed: onPressed, child: Text(buttonTitle)),
       ],
     );
