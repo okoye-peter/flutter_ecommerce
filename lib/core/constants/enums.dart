@@ -1,9 +1,4 @@
-class TextSizes {
-  TextSizes._();
-  static const String small = 'small';
-  static const String medium = 'medium';
-  static const String large = 'large';
-}
+enum TextSizes { small, medium, large }
 
 class OrderStatus {
   OrderStatus._();

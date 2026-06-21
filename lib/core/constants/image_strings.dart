@@ -25,6 +25,12 @@ class TImages {
   static const String categoryFood = "assets/images/categories/food_cat.jpeg";
   static const String categorySport = "assets/images/categories/Sport.jpeg";
 
+  // -- Brands Images 
+  static const String nikeBrandLogo = "assets/images/brands/nike_logo.png";
+  static const String adidasBrandLogo = "assets/images/brands/adidas_logo.png";
+  static const String pumaBrandLogo = "assets/images/brands/puma_logo.png";
+  static const String jordanBrandLogo = "assets/images/brands/jordan_logo.png";
+
   // -- Home Images
   static const String promoBanner1 = "assets/images/home/promoBanner1.jpeg";
   static const String promoBanner2 = "assets/images/home/promoBanner2.jpeg";
@@ -46,5 +52,7 @@ class TImages {
   static const String productImage12 = "assets/images/products/_ (2).jpeg";
   static const String productImage13 = "assets/images/products/_.jpeg";
   static const String productImage14 = "assets/images/products/sneakers and face cap affordable.jpeg";
+  static const String productImage15 = "assets/images/products/AKKI CREATION.jpeg";
+  static const String productImage16 = "assets/images/products/Blue & White Nike Tracksuit _ Minimalist Streetwear Style.jpeg";
 
 }

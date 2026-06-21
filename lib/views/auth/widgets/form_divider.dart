@@ -1,5 +1,5 @@
 import 'package:ecommerce/core/constants/colors.dart';
-import 'package:ecommerce/core/helpers/halper_functions.dart';
+import 'package:ecommerce/core/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 
 class TFormDivider extends StatelessWidget {

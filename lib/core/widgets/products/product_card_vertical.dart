@@ -1,7 +1,7 @@
 import 'package:ecommerce/core/constants/colors.dart';
 import 'package:ecommerce/core/constants/image_strings.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
-import 'package:ecommerce/core/helpers/halper_functions.dart';
+import 'package:ecommerce/core/helpers/helper_functions.dart';
 import 'package:ecommerce/core/styles/shadow.dart';
 import 'package:ecommerce/core/widgets/images/rounded_image.dart';
 import 'package:ecommerce/core/widgets/icons/circular_icon.dart';

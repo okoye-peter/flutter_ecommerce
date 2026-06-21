@@ -15,7 +15,7 @@ class TBrandTitleText extends StatelessWidget {
   final String title;
   final int maxLines;
   final TextAlign? textAlign;
-  final String brandTextSize;
+  final TextSizes brandTextSize;
 
   @override
   Widget build(BuildContext context) {

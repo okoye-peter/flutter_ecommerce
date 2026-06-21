@@ -1,5 +1,5 @@
 import 'package:ecommerce/core/constants/colors.dart';
-import 'package:ecommerce/core/helpers/halper_functions.dart';
+import 'package:ecommerce/core/helpers/helper_functions.dart';
 import 'package:ecommerce/views/home/home.dart';
 import 'package:ecommerce/views/store/store.dart';
 import 'package:ecommerce/views/wishlists/wishlist.dart';

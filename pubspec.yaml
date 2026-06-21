@@ -75,6 +75,7 @@ flutter:
     - assets/images/products/
     - assets/images/home/
     - assets/images/categories/
+    - assets/images/brands/
     - assets/images/forgot_password/
     - assets/images/
     - assets/icons/
