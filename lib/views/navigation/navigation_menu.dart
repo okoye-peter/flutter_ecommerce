@@ -1,26 +1,27 @@
 import 'package:ecommerce/core/constants/colors.dart';
 import 'package:ecommerce/core/helpers/helper_functions.dart';
 import 'package:ecommerce/views/home/home.dart';
+import 'package:ecommerce/views/settings/settings_screen.dart';
 import 'package:ecommerce/views/store/store.dart';
 import 'package:ecommerce/views/wishlists/wishlist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final _navigationIndexProvider = StateProvider<int>((ref) => 0);
+final navigationIndexProvider = StateProvider<int>((ref) => 0);
 
 class NavigationMenuScreen extends ConsumerWidget {
   const NavigationMenuScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedIndex = ref.watch(_navigationIndexProvider);
+    final selectedIndex = ref.watch(navigationIndexProvider);
     final dark = THelperFunctions.isDarkMode(context);
 
     final screens = [
       const HomeScreen(),
       const StoreScreen(),
       const FavoriteScreen(),
-      Container(color: Colors.grey),
+      const SettingsScreen()
     ];
 
     return Scaffold(
@@ -28,7 +29,7 @@ class NavigationMenuScreen extends ConsumerWidget {
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedIndex,
         onDestinationSelected: (index) =>
-            ref.read(_navigationIndexProvider.notifier).state = index,
+            ref.read(navigationIndexProvider.notifier).state = index,
         backgroundColor: dark ? TColors.black : Colors.white,
         indicatorColor: dark
             ? TColors.white.withAlpha(26)

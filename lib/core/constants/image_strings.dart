@@ -2,6 +2,10 @@ class TImages {
   static const String darkAppLogo = "assets/logos/light_logo.png";
   static const String lightAppLogo = "assets/logos/dark_logo.png";
 
+  // -- User Default Avatar
+  static const String userMaleAvatar = "assets/images/users/user_male_avatar.png";
+  static const String userFemaleAvatar = "assets/images/users/user_female_avatar.png";
+
   // -- Social Logos
   static const String google = "assets/icons/Google_Logo.png";
   static const String facebook = "assets/icons/facebook_logo.png";
@@ -22,8 +26,13 @@ class TImages {
   static const String successIllustrator = "assets/images/success_images/success_illustrator.gif";
 
   // -- Category Images
-  static const String categoryFood = "assets/images/categories/food_cat.jpeg";
-  static const String categorySport = "assets/images/categories/Sport.jpeg";
+  static const String categorySport = "assets/images/categories/Sport.png";
+  static const String categoryAutoMobile = "assets/images/categories/auto_mobile.png";
+  static const String categoryClothing = "assets/images/categories/clothing.png";
+  static const String categoryFood = "assets/images/categories/food.png";
+  static const String categoryFoodCat = "assets/images/categories/food_cat.png";
+  static const String categoryGadget = "assets/images/categories/gadget.png";
+  static const String categoryGames = "assets/images/categories/games.png";
 
   // -- Brands Images 
   static const String nikeBrandLogo = "assets/images/brands/nike_logo.png";

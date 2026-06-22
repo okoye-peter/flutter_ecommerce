@@ -4,9 +4,10 @@ import 'package:ecommerce/core/utils/device/device_utility.dart';
 import 'package:flutter/material.dart';
 
 class TTabBar extends StatelessWidget implements PreferredSizeWidget {
-  const TTabBar({super.key, required this.tabs});
+  const TTabBar({super.key, required this.tabs, this.padding});
 
   final List<Widget> tabs;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,8 @@ class TTabBar extends StatelessWidget implements PreferredSizeWidget {
       child: TabBar(
         tabs: tabs,
         isScrollable: true,
+        tabAlignment: TabAlignment.start,
+        padding: padding ?? EdgeInsets.zero,
         indicatorColor: TColors.primary,
         labelColor: dark ? TColors.white : TColors.primary,
         unselectedLabelColor: TColors.darkGrey,

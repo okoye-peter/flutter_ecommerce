@@ -4,9 +4,17 @@ import 'package:ecommerce/core/constants/image_strings.dart';
 import 'package:ecommerce/views/home/widgets/vertical_image_text.dart';
 
 class THomeCategories extends StatelessWidget {
-  const THomeCategories({
-    super.key,
-  });
+  const THomeCategories({super.key});
+
+  static List<Map<String, String>> categories = [
+    {"imgUrl": TImages.categorySport, "name": 'Sport'}, 
+    {"imgUrl": TImages.categoryAutoMobile, "name": 'Automobile'},
+    {"imgUrl": TImages.categoryClothing, "name": 'Clothings'},
+    {"imgUrl": TImages.categoryFood, "name": 'Food'},
+    // {"imgUrl": TImages.categoryFoodCat, "name": ''},
+    {"imgUrl": TImages.categoryGadget, "name": 'Gadgets'},
+    {"imgUrl": TImages.categoryGames, "name": 'Games'}
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +26,8 @@ class THomeCategories extends StatelessWidget {
         itemBuilder: (_, index) {
           // categories
           return TVerticalImageText(
-            image: TImages.categoryFood,
-            title: 'Shoes',
+            image: categories[index]['imgUrl']!,
+            title: categories[index]['name']!,
             textColor: TColors.white,
             onTap: () {},
           );

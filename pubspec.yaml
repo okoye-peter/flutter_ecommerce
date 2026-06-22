@@ -44,6 +44,7 @@ dependencies:
   smooth_page_indicator: ^2.0.1
   go_router: ^17.3.0
   carousel_slider: ^5.1.2
+  iconsax: ^0.0.8
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +78,7 @@ flutter:
     - assets/images/categories/
     - assets/images/brands/
     - assets/images/forgot_password/
+    - assets/images/users/
     - assets/images/
     - assets/icons/
     - assets/logos/

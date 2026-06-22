@@ -15,6 +15,7 @@ abstract final class AppRoutes {
   static const forgotPassword = '/forgot_password';
   static const resetPassword = '/reset_password';
   static const navigation = '/navigation';
+  static const home = '/home';
 }
 
 final appRouter = GoRouter(
