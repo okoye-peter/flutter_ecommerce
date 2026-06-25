@@ -5,6 +5,8 @@ import 'package:ecommerce/views/auth/reset_password.dart';
 import 'package:ecommerce/views/auth/signup.dart';
 import 'package:ecommerce/views/auth/verify_email.dart';
 import 'package:ecommerce/views/navigation/navigation_menu.dart';
+import 'package:ecommerce/views/products/product_details.dart';
+import 'package:ecommerce/views/profile/profile.dart';
 import 'package:go_router/go_router.dart';
 
 abstract final class AppRoutes {
@@ -15,6 +17,9 @@ abstract final class AppRoutes {
   static const forgotPassword = '/forgot_password';
   static const resetPassword = '/reset_password';
   static const navigation = '/navigation';
+  static const profile = '/profile';
+  static const productDetailsPath = '/products/:productId';
+  static String productDetails(String id) => '/products/$id';
   static const home = '/home';
 }
 
@@ -49,5 +54,14 @@ final appRouter = GoRouter(
       path: AppRoutes.navigation,
       builder: (context, state) => const NavigationMenuScreen(),
     ),
+    GoRoute(
+      path: AppRoutes.profile,
+      builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.productDetailsPath,
+      builder: (context, state) => const ProductDetailsScreen(),
+    ),
+
   ],
 );

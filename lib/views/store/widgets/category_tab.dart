@@ -1,4 +1,3 @@
-import 'package:ecommerce/core/constants/image_strings.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/widgets/grids/grid_layout.dart';
 import 'package:ecommerce/core/widgets/products/product_card_vertical.dart';
