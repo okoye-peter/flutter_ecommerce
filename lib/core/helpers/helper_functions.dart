@@ -15,6 +15,7 @@ class THelperFunctions {
       case 'brown':   return Colors.brown;
       case 'teal':    return Colors.teal;
       case 'indigo':  return Colors.indigo;
+      case 'yellow':  return Colors.yellow;
       default:        return null;
     }
   }

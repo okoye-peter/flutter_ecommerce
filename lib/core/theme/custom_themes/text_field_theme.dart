@@ -1,3 +1,4 @@
+import 'package:ecommerce/core/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class TTextFieldTheme {
@@ -21,7 +22,7 @@ class TTextFieldTheme {
     ),
     focusedBorder: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(14),
-      borderSide: BorderSide(color: Colors.blue, width: 1),
+      borderSide: BorderSide(color: TColors.primary, width: 1),
     ),
     errorBorder: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(14),

@@ -1,3 +1,4 @@
+import 'package:ecommerce/core/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class TOutlinedButtonTheme {
@@ -7,8 +8,8 @@ class TOutlinedButtonTheme {
       OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           elevation: 0,
-          foregroundColor: Colors.black,
-          side: BorderSide(color: Colors.blue),
+          foregroundColor: TColors.black,
+          side: BorderSide(color: TColors.primary),
           textStyle: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,

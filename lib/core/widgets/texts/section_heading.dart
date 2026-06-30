@@ -27,8 +27,10 @@ class TSectionHeading extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-        const Spacer(),
-        if (showActionButton) TextButton(onPressed: onPressed, child: Text(buttonTitle)),
+        if (showActionButton) ...[
+          const Spacer(),
+          TextButton(onPressed: onPressed, child: Text(buttonTitle)),
+        ],
       ],
     );
   }
