@@ -6,7 +6,10 @@ import 'package:ecommerce/views/auth/signup.dart';
 import 'package:ecommerce/views/auth/verify_email.dart';
 import 'package:ecommerce/views/navigation/navigation_menu.dart';
 import 'package:ecommerce/views/products/product_details.dart';
+import 'package:ecommerce/views/products/product_review.dart';
 import 'package:ecommerce/views/profile/profile.dart';
+import 'package:ecommerce/views/settings/address/add_new_address.dart';
+import 'package:ecommerce/views/settings/address/address.dart';
 import 'package:go_router/go_router.dart';
 
 abstract final class AppRoutes {
@@ -18,8 +21,12 @@ abstract final class AppRoutes {
   static const resetPassword = '/reset_password';
   static const navigation = '/navigation';
   static const profile = '/profile';
+  static const addNewAddress = '/profile/address/create';
+  static const address = '/profile/address';
   static const productDetailsPath = '/products/:productId';
   static String productDetails(String id) => '/products/$id';
+  static const productReviewsPath = '/products/:productId/reviews';
+  static String productReviews(String id) => '/products/$id/reviews';
   static const home = '/home';
 }
 
@@ -61,6 +68,18 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.productDetailsPath,
       builder: (context, state) => const ProductDetailsScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.productReviewsPath,
+      builder: (context, state) => const ProductReviewsScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.address,
+      builder: (context, state) => const UserAddressScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.addNewAddress,
+      builder: (context, state) => const AddNewAddressScreen(),
     ),
 
   ],

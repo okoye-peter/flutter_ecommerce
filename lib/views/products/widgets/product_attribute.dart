@@ -49,7 +49,9 @@ class TProductAttributes extends StatelessWidget {
                             '\$25',
                             style: Theme.of(
                               context,
-                            ).textTheme.titleSmall!.apply(),
+                            ).textTheme.titleSmall!.apply(
+                              decoration: TextDecoration.lineThrough
+                            ),
                           ),
 
                           const SizedBox(width: TSizes.spaceBtwItem),
@@ -78,7 +80,7 @@ class TProductAttributes extends StatelessWidget {
 
               const SizedBox(width: TSizes.spaceBtwItem),
 
-              // Variation
+              // Variation Description
               const TProductTitleText(
                 title:
                     'This is the Description of the Product and it can go up to 4 lines ',
@@ -122,6 +124,7 @@ class TProductAttributes extends StatelessWidget {
         ),
 
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TSectionHeading(title: 'Sizes', showActionButton: false),
             SizedBox(height: TSizes.spaceBtwItem / 2),
