@@ -25,8 +25,7 @@ class LocalStorage {
 
   Future<void> writeInt(String key, int value) => _prefs.setInt(key, value);
 
-  int readInt(String key, {int fallback = 0}) =>
-      _prefs.getInt(key) ?? fallback;
+  int readInt(String key, {int fallback = 0}) => _prefs.getInt(key) ?? fallback;
 
   Future<void> writeDouble(String key, double value) =>
       _prefs.setDouble(key, value);
@@ -103,6 +102,15 @@ class LocalStorage {
   }
 
   Future<void> clearWishlist() => _prefs.remove(_wishlistKey);
+
+  // ── Onboarding ───────────────────────────────────────────────────────────────
+
+  static const _hasSeenOnboardingKey = 'has_seen_onboarding';
+
+  bool get hasSeenOnboarding => readBool(_hasSeenOnboardingKey);
+
+  Future<void> completeOnboarding() =>
+      writeBool(_hasSeenOnboardingKey, value: true);
 
   // ── Helpers ─────────────────────────────────────────────────────────────────
 

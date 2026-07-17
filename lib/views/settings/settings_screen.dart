@@ -1,11 +1,13 @@
 import 'package:ecommerce/core/constants/colors.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
+import 'package:ecommerce/core/router/app_router.dart';
 import 'package:ecommerce/core/widgets/appbar/appbar.dart';
 import 'package:ecommerce/core/widgets/curved_edges/primary_header_container.dart';
 import 'package:ecommerce/core/widgets/texts/section_heading.dart';
 import 'package:ecommerce/views/settings/widgets/setting_menu_tiles.dart';
 import 'package:ecommerce/views/settings/widgets/user_profile_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -45,9 +47,9 @@ class SettingsScreen extends StatelessWidget {
                   // -- Account Settings
                   const TSectionHeading(title: 'Account Settings', showActionButton: false),
                   const SizedBox(height: TSizes.spaceBtwItem),
-                  TSettingMenuTiles(icon: Icons.home_outlined, title: 'My Addresses', subTitle: 'Set shopping delivery address', onTap: () {}),
+                  TSettingMenuTiles(icon: Icons.home_outlined, title: 'My Addresses', subTitle: 'Set shopping delivery address', onTap: () => context.push(AppRoutes.address)),
                   TSettingMenuTiles(icon: Icons.shopping_cart_outlined, title: 'My Cart', subTitle: 'Add, remove products and move to checkout', onTap: () {}),
-                  TSettingMenuTiles(icon: Icons.shopping_bag_outlined, title: 'My Orders', subTitle: 'In-progress and Completed Orders', onTap: () {}),
+                  TSettingMenuTiles(icon: Icons.shopping_bag_outlined, title: 'My Orders', subTitle: 'In-progress and Completed Orders', onTap: () => context.push(AppRoutes.orders)),
                   TSettingMenuTiles(icon: Icons.account_balance_outlined, title: 'Bank Account', subTitle: 'Withdraw balance to registered bank account', onTap: () {}),
                   TSettingMenuTiles(icon: Icons.discount_outlined, title: 'My Coupons', subTitle: 'List of all the discounted coupons', onTap: () {}),
                   TSettingMenuTiles(icon: Icons.notifications_outlined, title: 'Notifications', subTitle: 'Set any kind of notification message', onTap: () {}),

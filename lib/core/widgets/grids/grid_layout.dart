@@ -2,7 +2,7 @@ import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:flutter/material.dart';
 
 class TGridLayout extends StatelessWidget {
-  const TGridLayout({super.key, required this.itemCount, this.mainAxisExtent, required this.itemBuilder});
+  const TGridLayout({super.key, required this.itemCount, this.mainAxisExtent = 288, required this.itemBuilder});
 
   final int itemCount;
   final double? mainAxisExtent;

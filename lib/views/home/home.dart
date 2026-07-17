@@ -1,6 +1,7 @@
 import 'package:ecommerce/core/constants/colors.dart';
 import 'package:ecommerce/core/constants/image_strings.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
+import 'package:ecommerce/core/router/app_router.dart';
 import 'package:ecommerce/core/widgets/curved_edges/primary_header_container.dart';
 import 'package:ecommerce/core/widgets/products/product_card_vertical.dart';
 import 'package:ecommerce/core/widgets/products/product_grid_view.dart';
@@ -10,6 +11,7 @@ import 'package:ecommerce/views/home/widgets/home_app_bar.dart';
 import 'package:ecommerce/views/home/widgets/home_categories.dart';
 import 'package:ecommerce/views/home/widgets/promo_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -70,6 +72,13 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
 
+                  const SizedBox(height: TSizes.spaceBtwSections),
+
+                  TSectionHeading(
+                    title: 'Popular Products',
+                    // showActionButton: false,
+                    onPressed: () => context.push(AppRoutes.products),
+                  ),
                   const SizedBox(height: TSizes.spaceBtwSections),
 
                   // products

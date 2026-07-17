@@ -1,7 +1,9 @@
+import 'package:ecommerce/core/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce/core/constants/colors.dart';
 import 'package:ecommerce/core/constants/image_strings.dart';
 import 'package:ecommerce/views/home/widgets/vertical_image_text.dart';
+import 'package:go_router/go_router.dart';
 
 class THomeCategories extends StatelessWidget {
   const THomeCategories({super.key});
@@ -29,7 +31,7 @@ class THomeCategories extends StatelessWidget {
             image: categories[index]['imgUrl']!,
             title: categories[index]['name']!,
             textColor: TColors.white,
-            onTap: () {},
+            onTap: () => context.push(AppRoutes.subCategories),
           );
         },
       ),
