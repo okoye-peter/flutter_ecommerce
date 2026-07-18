@@ -29,9 +29,14 @@ class TFullScreenLoader {
   }
 
   static void stopLoading() {
-    Navigator.of(
-      rootNavigatorKey.currentContext!,
-      rootNavigator: true,
-    ).pop();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final navigator = Navigator.of(
+        rootNavigatorKey.currentContext!,
+        rootNavigator: true,
+      );
+      if (navigator.canPop()) {
+        navigator.pop();
+      }
+    });
   }
 }

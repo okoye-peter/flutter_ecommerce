@@ -4,6 +4,7 @@ import 'package:ecommerce/core/utils/local_storage/local_storage.dart';
 import 'package:ecommerce/core/utils/local_storage/secure_storage.dart';
 import 'package:ecommerce/firebase_options.dart';
 import 'package:ecommerce/repositories/authentication_repository.dart';
+import 'package:ecommerce/repositories/user_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -19,6 +20,7 @@ void main() async {
   // initialize firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final authRepository = AuthenticationRepository();
+  final userRepository = UserRepository();
 
   // init local storage (Shared preference)
   final localStorage = await LocalStorage().init();
@@ -31,6 +33,7 @@ void main() async {
       localStorageProvider.overrideWithValue(localStorage),
       secureStorageProvider.overrideWithValue(secureStorage),
       authRepositoryProvider.overrideWithValue(authRepository),
+      userRepositoryProvider.overrideWithValue(userRepository),
     ],
   );
 

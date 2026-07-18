@@ -51,6 +51,8 @@ dependencies:
   firebase_auth: ^6.5.6
   lottie: ^3.5.1
   connectivity_plus: ^7.3.0
+  toastification: ^3.2.0
+  cloud_firestore: ^6.7.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -89,6 +91,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/logos/
+    - assets/lottie/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

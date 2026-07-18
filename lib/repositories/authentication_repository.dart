@@ -1,4 +1,9 @@
+import 'package:ecommerce/core/errors/firebase_auth_exception.dart';
+import 'package:ecommerce/core/errors/firebase_exception.dart';
+import 'package:ecommerce/core/errors/format_exception.dart';
+import 'package:ecommerce/core/errors/platform_exception.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 
 class AuthenticationRepository {
   AuthenticationRepository({FirebaseAuth? firebaseAuth})
@@ -29,11 +34,23 @@ class AuthenticationRepository {
   Future<UserCredential> registerWithEmailAndPassword(
     String email,
     String password,
-  ) {
-    return _firebaseAuth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+  ) async {
+    try {
+      return await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const TFormatException();
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (_) {
+      throw 'Something went wrong. Please try again.';
+    }
   }
 
   /// [ReAuthenticate] - ReAuthenticate User
