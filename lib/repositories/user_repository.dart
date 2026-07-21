@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce/core/errors/firebase_auth_exception.dart';
+import 'package:ecommerce/core/errors/firebase_exception.dart';
 import 'package:ecommerce/core/errors/format_exception.dart';
 import 'package:ecommerce/core/errors/platform_exception.dart';
 import 'package:ecommerce/models/user_model.dart';
@@ -18,7 +18,7 @@ class UserRepository {
           .doc(user.id)
           .set(user.toJson());
     } on FirebaseException catch (e) {
-      throw TFirebaseAuthException(e.code).message;
+      throw TFirebaseException(e.code).message;
     } on FormatException catch (_) {
       throw const TFormatException();
     } on PlatformException catch (e) {

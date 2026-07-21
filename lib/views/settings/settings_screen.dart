@@ -1,19 +1,22 @@
 import 'package:ecommerce/core/constants/colors.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
+import 'package:ecommerce/core/providers/providers.dart';
 import 'package:ecommerce/core/router/app_router.dart';
 import 'package:ecommerce/core/widgets/appbar/appbar.dart';
 import 'package:ecommerce/core/widgets/curved_edges/primary_header_container.dart';
+import 'package:ecommerce/core/widgets/loaders/full_screen_loader.dart';
 import 'package:ecommerce/core/widgets/texts/section_heading.dart';
 import 'package:ecommerce/views/settings/widgets/setting_menu_tiles.dart';
 import 'package:ecommerce/views/settings/widgets/user_profile_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -45,21 +48,67 @@ class SettingsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   // -- Account Settings
-                  const TSectionHeading(title: 'Account Settings', showActionButton: false),
+                  const TSectionHeading(
+                    title: 'Account Settings',
+                    showActionButton: false,
+                  ),
                   const SizedBox(height: TSizes.spaceBtwItem),
-                  TSettingMenuTiles(icon: Icons.home_outlined, title: 'My Addresses', subTitle: 'Set shopping delivery address', onTap: () => context.push(AppRoutes.address)),
-                  TSettingMenuTiles(icon: Icons.shopping_cart_outlined, title: 'My Cart', subTitle: 'Add, remove products and move to checkout', onTap: () {}),
-                  TSettingMenuTiles(icon: Icons.shopping_bag_outlined, title: 'My Orders', subTitle: 'In-progress and Completed Orders', onTap: () => context.push(AppRoutes.orders)),
-                  TSettingMenuTiles(icon: Icons.account_balance_outlined, title: 'Bank Account', subTitle: 'Withdraw balance to registered bank account', onTap: () {}),
-                  TSettingMenuTiles(icon: Icons.discount_outlined, title: 'My Coupons', subTitle: 'List of all the discounted coupons', onTap: () {}),
-                  TSettingMenuTiles(icon: Icons.notifications_outlined, title: 'Notifications', subTitle: 'Set any kind of notification message', onTap: () {}),
-                  TSettingMenuTiles(icon: Icons.security, title: 'Account Privacy', subTitle: 'Manage data usage and connected accounts', onTap: () {}),
+                  TSettingMenuTiles(
+                    icon: Icons.home_outlined,
+                    title: 'My Addresses',
+                    subTitle: 'Set shopping delivery address',
+                    onTap: () => context.push(AppRoutes.address),
+                  ),
+                  TSettingMenuTiles(
+                    icon: Icons.shopping_cart_outlined,
+                    title: 'My Cart',
+                    subTitle: 'Add, remove products and move to checkout',
+                    onTap: () {},
+                  ),
+                  TSettingMenuTiles(
+                    icon: Icons.shopping_bag_outlined,
+                    title: 'My Orders',
+                    subTitle: 'In-progress and Completed Orders',
+                    onTap: () => context.push(AppRoutes.orders),
+                  ),
+                  TSettingMenuTiles(
+                    icon: Icons.account_balance_outlined,
+                    title: 'Bank Account',
+                    subTitle: 'Withdraw balance to registered bank account',
+                    onTap: () {},
+                  ),
+                  TSettingMenuTiles(
+                    icon: Icons.discount_outlined,
+                    title: 'My Coupons',
+                    subTitle: 'List of all the discounted coupons',
+                    onTap: () {},
+                  ),
+                  TSettingMenuTiles(
+                    icon: Icons.notifications_outlined,
+                    title: 'Notifications',
+                    subTitle: 'Set any kind of notification message',
+                    onTap: () {},
+                  ),
+                  TSettingMenuTiles(
+                    icon: Icons.security,
+                    title: 'Account Privacy',
+                    subTitle: 'Manage data usage and connected accounts',
+                    onTap: () {},
+                  ),
 
                   // -- App Settings
                   const SizedBox(height: TSizes.spaceBtwSections),
-                  const TSectionHeading(title: 'App Settings', showActionButton: false),
+                  const TSectionHeading(
+                    title: 'App Settings',
+                    showActionButton: false,
+                  ),
                   const SizedBox(height: TSizes.spaceBtwItem),
-                  TSettingMenuTiles(icon: Icons.upload_outlined, title: 'Load Data', subTitle: 'Upload data to your Cloud Firebase', onTap: () {}),
+                  TSettingMenuTiles(
+                    icon: Icons.upload_outlined,
+                    title: 'Load Data',
+                    subTitle: 'Upload data to your Cloud Firebase',
+                    onTap: () {},
+                  ),
                   TSettingMenuTiles(
                     icon: Icons.location_on_outlined,
                     title: 'Geolocation',
@@ -84,7 +133,11 @@ class SettingsScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        TFullScreenLoader.openLoadingDialog('logging out...');
+                        await ref.read(authRepositoryProvider).logout();
+                        TFullScreenLoader.stopLoading();
+                      },
                       child: const Text('Logout'),
                     ),
                   ),

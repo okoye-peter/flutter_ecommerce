@@ -16,14 +16,12 @@ class TDeviceUtils {
     );
   }
 
-  static bool isLandScopeOrientation(BuildContext context) {
-    final viewInsets = View.of(context).viewInsets;
-    return viewInsets.bottom == 0;
+  static bool isLandscapeOrientation(BuildContext context) {
+    return MediaQuery.of(context).orientation == Orientation.landscape;
   }
 
   static bool isPortraitOrientation(BuildContext context) {
-    final viewInsets = View.of(context).viewInsets;
-    return viewInsets.bottom != 0;
+    return MediaQuery.of(context).orientation == Orientation.portrait;
   }
 
   static void setFullScreen(bool enable) {
@@ -61,12 +59,12 @@ class TDeviceUtils {
     return viewInsets.bottom;
   }
 
-  static Future<bool> isKeyboardVisible(BuildContext context) async {
+  static bool isKeyboardVisible(BuildContext context) {
     final viewInsets = View.of(context).viewInsets;
     return viewInsets.bottom > 0;
   }
 
-  static Future<bool> isPhysicalDevice() async {
+  static bool isPhysicalDevice() {
     return defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS;
   }
@@ -93,24 +91,15 @@ class TDeviceUtils {
     );
   }
 
-  static Future<bool> hasInternetConnection() async {
-    try {
-      final result = await InternetAddress.lookup('example.com');
-      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-    } on SocketException catch (_) {
-      return false;
-    }
-  }
-
   static bool isIOS() => Platform.isIOS;
 
   static bool isAndroid() => Platform.isAndroid;
 
-  static void launchUrl(String url) async {
+  static Future<void> launchUrl(String url) async {
     if (await canLaunchUrlString(url)) {
       await launchUrlString(url);
     } else {
-      throw 'could not launch $url';
+      throw Exception('Could not launch $url');
     }
   }
 }

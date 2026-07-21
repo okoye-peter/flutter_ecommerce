@@ -1,3 +1,4 @@
+import 'package:ecommerce/core/constants/image_strings.dart';
 import 'package:ecommerce/core/providers/providers.dart';
 import 'package:ecommerce/core/widgets/loaders/full_screen_loader.dart';
 import 'package:ecommerce/core/widgets/loaders/snacks_loader.dart';
@@ -63,7 +64,7 @@ class SignupController extends Notifier<SignupState> {
       // show Loader
       TFullScreenLoader.openLoadingDialog(
         'Processing your information...',
-        animation: 'assets/lottie/loading.json',
+        animation: TImages.loadingAnimation,
       );
 
       // check Internet Connectivity

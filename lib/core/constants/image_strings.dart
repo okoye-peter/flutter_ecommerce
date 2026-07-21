@@ -90,4 +90,7 @@ class TImages {
   // - Payment Images
   static const String paystack = "assets/images/payments/paystack.jpeg";
   static const String stripe = "assets/images/payments/stripe.jpeg";
+
+  // -- Lottie Animations
+  static const String loadingAnimation = "assets/lottie/loading.json";
 }

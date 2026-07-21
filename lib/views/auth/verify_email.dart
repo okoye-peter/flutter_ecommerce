@@ -2,22 +2,54 @@ import 'package:ecommerce/core/constants/image_strings.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/constants/text_strings.dart';
 import 'package:ecommerce/core/helpers/helper_functions.dart';
+import 'package:ecommerce/core/providers/providers.dart';
 import 'package:ecommerce/core/router/app_router.dart';
 import 'package:ecommerce/core/widgets/success/success_screen.dart';
+import 'package:ecommerce/viewmodels/auth/email_verification_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class VerifyEmailScreen extends StatelessWidget {
-  const VerifyEmailScreen({super.key});
+void _goToSuccessScreen(BuildContext context) {
+  final router = GoRouter.of(context);
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (_) => SuccessScreen(
+        image: TImages.successIllustrator,
+        title: TTexts.yourAccountCreatedTitle,
+        subtitle: TTexts.yourAccountCreatedSubTitle,
+        onPressed: () => router.go(AppRoutes.navigation),
+      ),
+    ),
+  );
+}
+
+class VerifyEmailScreen extends ConsumerWidget {
+  const VerifyEmailScreen({super.key, this.email});
+
+  final String? email;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.watch(emailVerificationProvider.notifier);
+
+    ref.listen<EmailVerificationState>(emailVerificationProvider, (
+      previous,
+      next,
+    ) {
+      if (next.isVerified && previous?.isVerified != true) {
+        _goToSuccessScreen(context);
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
             onPressed: () {
+              ref.read(authRepositoryProvider).logout();
               // if (context.canPop()) {
               //   context.pop();
               // }
@@ -47,7 +79,7 @@ class VerifyEmailScreen extends StatelessWidget {
               ),
               const SizedBox(height: TSizes.spaceBtwItem),
               Text(
-                'okoyepeter039@gmail.com',
+                email ?? '',
                 style: Theme.of(context).textTheme.labelLarge,
                 textAlign: TextAlign.center,
               ),
@@ -62,20 +94,7 @@ class VerifyEmailScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    final router = GoRouter.of(context);
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => SuccessScreen(
-                          image: TImages.successIllustrator,
-                          title: TTexts.yourAccountCreatedTitle,
-                          subtitle: TTexts.yourAccountCreatedSubTitle,
-                          onPressed: () => router.go(AppRoutes.login),
-                        ),
-                      ),
-                    );
-                  },
+                  onPressed: () => _goToSuccessScreen(context),
                   child: const Text(TTexts.tContinue),
                 ),
               ),
@@ -83,7 +102,7 @@ class VerifyEmailScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () => controller.sendEmailVerification(),
                   child: const Text(TTexts.resendEmail),
                 ),
               ),

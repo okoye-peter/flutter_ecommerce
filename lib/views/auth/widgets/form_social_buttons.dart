@@ -1,15 +1,17 @@
 import 'package:ecommerce/core/constants/colors.dart';
 import 'package:ecommerce/core/constants/image_strings.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
+import 'package:ecommerce/viewmodels/auth/login_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TFormSocialButtons extends StatelessWidget {
-  const TFormSocialButtons({
-    super.key,
-  });
+class TFormSocialButtons extends ConsumerWidget {
+  const TFormSocialButtons({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(loginControllerProvider.notifier);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -19,7 +21,7 @@ class TFormSocialButtons extends StatelessWidget {
             borderRadius: BorderRadius.circular(100),
           ),
           child: IconButton(
-            onPressed: () {},
+            onPressed: controller.signInWithGoogle,
             icon: const Image(
               image: AssetImage(TImages.google),
               width: TSizes.iconMd,

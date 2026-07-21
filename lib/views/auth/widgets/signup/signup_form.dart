@@ -14,7 +14,6 @@ class TSignUpForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final dark = THelperFunctions.isDarkMode(context);
     final controller = ref.read(signupControllerProvider.notifier);
-    final state = ref.watch(signupControllerProvider);
 
     return Form(
       key: controller.formKey,
@@ -93,23 +92,30 @@ class TSignUpForm extends ConsumerWidget {
           const SizedBox(height: TSizes.spaceBtwInputFields),
 
           // Password
-          TextFormField(
-            controller: controller.passwordController,
-            obscureText: state.obscurePassword,
-            validator: (value) => TValidator.validatePassword(value),
-            expands: false,
-            decoration: InputDecoration(
-              labelText: TTexts.password,
-              prefixIcon: Icon(Icons.lock_open),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  state.obscurePassword
-                      ? Icons.remove_red_eye_outlined
-                      : Icons.visibility_off_outlined,
+          Consumer(
+            builder: (context, ref, _) {
+              final obscurePassword = ref.watch(
+                signupControllerProvider.select((s) => s.obscurePassword),
+              );
+              return TextFormField(
+                controller: controller.passwordController,
+                obscureText: obscurePassword,
+                validator: (value) => TValidator.validatePassword(value),
+                expands: false,
+                decoration: InputDecoration(
+                  labelText: TTexts.password,
+                  prefixIcon: Icon(Icons.lock_open),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      obscurePassword
+                          ? Icons.remove_red_eye_outlined
+                          : Icons.visibility_off_outlined,
+                    ),
+                    onPressed: controller.toggleObscurePassword,
+                  ),
                 ),
-                onPressed: controller.toggleObscurePassword,
-              ),
-            ),
+              );
+            },
           ),
 
           const SizedBox(height: TSizes.spaceBtwInputFields),
@@ -117,13 +123,20 @@ class TSignUpForm extends ConsumerWidget {
           // term & condition
           Row(
             children: [
-              SizedBox(
-                width: 24,
-                height: 24,
-                child: Checkbox(
-                  value: state.agreedToTerms,
-                  onChanged: (value) => controller.toggleAgreedToTerms(),
-                ),
+              Consumer(
+                builder: (context, ref, _) {
+                  final agreedToTerms = ref.watch(
+                    signupControllerProvider.select((s) => s.agreedToTerms),
+                  );
+                  return SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: Checkbox(
+                      value: agreedToTerms,
+                      onChanged: (value) => controller.toggleAgreedToTerms(),
+                    ),
+                  );
+                },
               ),
               const SizedBox(width: TSizes.spaceBtwInputFields),
               Text.rich(

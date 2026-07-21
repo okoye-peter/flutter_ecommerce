@@ -1,15 +1,21 @@
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/constants/text_strings.dart';
 import 'package:ecommerce/core/router/app_router.dart';
+import 'package:ecommerce/core/utils/validators/validator.dart';
+import 'package:ecommerce/viewmodels/auth/login_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class TLoginForm extends StatelessWidget {
+class TLoginForm extends ConsumerWidget {
   const TLoginForm({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(loginControllerProvider.notifier);
+
     return Form(
+      key: controller.formKey,
       child: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: TSizes.spaceBtwInputFields,
@@ -18,6 +24,8 @@ class TLoginForm extends StatelessWidget {
           children: [
             // Email
             TextFormField(
+              controller: controller.emailController,
+              validator: (value) => TValidator.validateEmail(value),
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.email),
                 labelText: TTexts.email,
@@ -26,12 +34,25 @@ class TLoginForm extends StatelessWidget {
             const SizedBox(height: TSizes.spaceBtwInputFields),
 
             // Password
-            TextFormField(
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.lock),
-                labelText: TTexts.password,
-                suffixIcon: Icon(Icons.remove_red_eye_outlined),
-              ),
+            Consumer(
+              builder: (context, ref, _) {
+                final hidePassword = ref.watch(
+                  loginControllerProvider.select((s) => s.hidePassword),
+                );
+                return TextFormField(
+                  controller: controller.passwordController,
+                  obscureText: hidePassword,
+                  validator: (value) => TValidator.validateEmptyText('password', value),
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.lock),
+                    labelText: TTexts.password,
+                    suffixIcon: IconButton(
+                      onPressed: controller.togglePasswordVisibility,
+                      icon: Icon(hidePassword ? Icons.remove_red_eye_outlined : Icons.visibility_off_outlined),
+                    ),
+                  ),
+                );
+              },
             ),
             const SizedBox(height: TSizes.spaceBtwInputFields / 2),
 
@@ -39,11 +60,21 @@ class TLoginForm extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Checkbox(value: true, onChanged: (value) {}),
-                    const Text(TTexts.rememberMe),
-                  ],
+                Consumer(
+                  builder: (context, ref, _) {
+                    final isRememberChecked = ref.watch(
+                      loginControllerProvider.select((s) => s.isRememberChecked),
+                    );
+                    return Row(
+                      children: [
+                        Checkbox(
+                          value: isRememberChecked,
+                          onChanged: (value) => controller.toggleRememberMe(value),
+                        ),
+                        const Text(TTexts.rememberMe),
+                      ],
+                    );
+                  },
                 ),
                 // Forgot Password
                 TextButton(
@@ -61,9 +92,7 @@ class TLoginForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  context.go(AppRoutes.navigation);
-                },
+                onPressed: controller.emailAndPasswordSignIn,
                 child: Text(TTexts.signIn),
               ),
             ),

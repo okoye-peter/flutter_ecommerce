@@ -58,7 +58,7 @@ class UserModel {
     };
   }
 
-  UserModel fromJson(Map<dynamic, dynamic> data) {
+  factory UserModel.fromJson(Map<dynamic, dynamic> data) {
     return UserModel(
       id: data['id'] ?? '',
       firstName: data['firstName'] ?? '',
@@ -78,12 +78,12 @@ class UserModel {
       final data = document.data()!;
       return UserModel(
         id: document.id,
-        firstName: data['FirstName'] ?? '',
-        lastName: data['LastName'] ?? '',
-        username: data['Username'] ?? '',
-        email: data['Email'] ?? '',
-        phoneNumber: data['PhoneNumber'] ?? '',
-        profilePicture: data['ProfilePicture'] ?? '',
+        firstName: data['firstName'] ?? '',
+        lastName: data['lastName'] ?? '',
+        username: data['username'] ?? '',
+        email: data['email'] ?? '',
+        phoneNumber: data['phoneNumber'] ?? '',
+        profilePicture: data['profilePicture'] ?? '',
       );
     } else {
       return UserModel.empty();
