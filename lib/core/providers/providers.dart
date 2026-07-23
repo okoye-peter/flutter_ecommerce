@@ -2,6 +2,7 @@ import 'package:ecommerce/core/utils/local_storage/local_storage.dart';
 import 'package:ecommerce/core/utils/local_storage/secure_storage.dart';
 import 'package:ecommerce/core/utils/network/network_manager.dart';
 import 'package:ecommerce/repositories/authentication_repository.dart';
+import 'package:ecommerce/repositories/cloudinary_repository.dart';
 import 'package:ecommerce/repositories/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,6 +20,10 @@ final authRepositoryProvider = Provider<AuthenticationRepository>(
 );
 
 final userRepositoryProvider = Provider<UserRepository>(
+  (ref) => throw UnimplementedError(),
+);
+
+final cloudinaryRepositoryProvider = Provider<CloudinaryRepository>(
   (ref) => throw UnimplementedError(),
 );
 

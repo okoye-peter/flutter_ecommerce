@@ -10,6 +10,15 @@ class TFormatter {
     return NumberFormat.currency(locale: 'en_US', symbol: '\$').format(amount);
   }
 
+  static String capitalizeWords(String text) {
+    if (text.trim().isEmpty) return text;
+    return text
+        .trim()
+        .split(RegExp(r'\s+'))
+        .map((word) => word[0].toUpperCase() + word.substring(1).toLowerCase())
+        .join(' ');
+  }
+
   static String formatPhoneNumber(String phoneNumber) {
     if (phoneNumber.length == 10) {
       return '(${phoneNumber.substring(0, 3)}) ${phoneNumber.substring(3, 6)} ${phoneNumber.substring(6)}';

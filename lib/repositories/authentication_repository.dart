@@ -131,4 +131,23 @@ class AuthenticationRepository {
   }
 
   Future<void> logout() => _firebaseAuth.signOut();
+
+  /// Permanently deletes the signed-in Firebase Auth user. Throws a
+  /// 'requires-recent-login' error if the user's session is too old —
+  /// callers should prompt for re-authentication in that case.
+  Future<void> deleteAccount() async {
+    try {
+      await _firebaseAuth.currentUser?.delete();
+    } on FirebaseAuthException catch (e) {
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const TFormatException();
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (_) {
+      throw 'Something went wrong. Please try again.';
+    }
+  }
 }

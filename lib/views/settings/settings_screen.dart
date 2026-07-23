@@ -5,7 +5,9 @@ import 'package:ecommerce/core/router/app_router.dart';
 import 'package:ecommerce/core/widgets/appbar/appbar.dart';
 import 'package:ecommerce/core/widgets/curved_edges/primary_header_container.dart';
 import 'package:ecommerce/core/widgets/loaders/full_screen_loader.dart';
+import 'package:ecommerce/core/widgets/loaders/shimmer_effect.dart';
 import 'package:ecommerce/core/widgets/texts/section_heading.dart';
+import 'package:ecommerce/viewmodels/auth/user_controller.dart';
 import 'package:ecommerce/views/settings/widgets/setting_menu_tiles.dart';
 import 'package:ecommerce/views/settings/widgets/user_profile_tile.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,8 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userState = ref.watch(userControllerProvider);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -36,7 +40,30 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: TSizes.md),
                   // User Profile
-                  TUserProfileTile(),
+                  userState.when(
+                    data: (user) => TUserProfileTile(user: user),
+                    loading: () => ListTile(
+                      leading: const TShimmerEffect(
+                        width: 62,
+                        height: 62,
+                        radius: 62,
+                      ),
+                      title: const Padding(
+                        padding: EdgeInsets.only(bottom: TSizes.xs),
+                        child: TShimmerEffect(width: 120, height: 18),
+                      ),
+                      subtitle: const TShimmerEffect(width: 160, height: 14),
+                      trailing: TShimmerEffect(
+                        width: 24,
+                        height: 24,
+                        radius: TSizes.borderRadiusSm,
+                      ),
+                    ),
+                    error: (_, _) => const Center(
+                      child: Text('Something went wrong loading your profile.'),
+                    ),
+                  ),
+
                   const SizedBox(height: TSizes.spaceBtwSections),
                 ],
               ),

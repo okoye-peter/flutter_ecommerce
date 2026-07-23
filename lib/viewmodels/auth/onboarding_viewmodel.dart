@@ -4,7 +4,7 @@ import 'package:ecommerce/models/onboarding_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class OnboardingNotifier extends Notifier<int> {
+class OnboardingNotifier extends AutoDisposeNotifier<int> {
   late final PageController pageController;
 
   static const List<OnboardingModel> pages = [
@@ -59,6 +59,6 @@ class OnboardingNotifier extends Notifier<int> {
   }
 }
 
-final onboardingProvider = NotifierProvider<OnboardingNotifier, int>(
+final onboardingProvider = NotifierProvider.autoDispose<OnboardingNotifier, int>(
   OnboardingNotifier.new,
 );

@@ -20,7 +20,7 @@ class UserModel {
   final String phoneNumber;
   final String profilePicture;
 
-  String get fullName => '$firstName $lastName';
+  String get fullName => TFormatter.capitalizeWords('$firstName $lastName');
 
   String get formattedPhoneNo => TFormatter.formatPhoneNumber(phoneNumber);
 

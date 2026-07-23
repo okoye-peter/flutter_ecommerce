@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
+import 'package:ecommerce/core/widgets/loaders/shimmer_effect.dart';
 import 'package:flutter/material.dart';
 
 class TCircularImage extends StatelessWidget {
@@ -27,17 +29,23 @@ class TCircularImage extends StatelessWidget {
       width: width,
       height: height,
       padding: EdgeInsets.all(padding),
-      decoration: BoxDecoration(
-        color: backgroundColor,
+
+      color: backgroundColor,
+      child: ClipRRect(
         borderRadius: BorderRadius.circular(100),
-      ),
-      child: Image(
-        fit: fit,
-        color: overlayColor,
-        image: isNetworkImage
-            ? NetworkImage(image) as ImageProvider
-            : AssetImage(image),
-      ),
+        child: Center(
+          child: isNetworkImage
+            ? CachedNetworkImage(
+                imageUrl: image,
+                fit: fit,
+                color: overlayColor,
+                placeholder: (context, url) =>
+                    TShimmerEffect(width: width, height: height, radius: 100),
+                errorWidget: (context, url, error) => const Icon(Icons.person),
+              )
+            : Image(fit: fit, color: overlayColor, image: AssetImage(image)),
+        ),
+      )
     );
   }
 }

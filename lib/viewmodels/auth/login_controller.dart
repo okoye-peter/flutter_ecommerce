@@ -4,6 +4,7 @@ import 'package:ecommerce/core/utils/local_storage/local_storage.dart';
 import 'package:ecommerce/core/utils/local_storage/secure_storage.dart';
 import 'package:ecommerce/core/widgets/loaders/full_screen_loader.dart';
 import 'package:ecommerce/core/widgets/loaders/snacks_loader.dart';
+import 'package:ecommerce/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -31,7 +32,7 @@ class LoginState {
   }
 }
 
-class LoginController extends Notifier<LoginState> {
+class LoginController extends AutoDisposeNotifier<LoginState> {
   late final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -123,7 +124,41 @@ class LoginController extends Notifier<LoginState> {
         return;
       }
 
-      await ref.read(authRepositoryProvider).signInWithGoogle();
+      final userCredential = await ref
+          .read(authRepositoryProvider)
+          .signInWithGoogle();
+
+      // Only write a record for brand-new accounts. Returning users' data
+      // already exists in Firestore and is picked up lazily (and correctly)
+      // the first time userControllerProvider is read — going through the
+      // notifier here would trigger its build() fetch before the doc exists
+      // for new users, and risks overwriting existing data for returning ones.
+      final isNewUser = userCredential?.additionalUserInfo?.isNewUser ?? false;
+      if (userCredential != null && isNewUser) {
+        final userData = userCredential.user!;
+        final nameParts = UserModel.nameParts(userData.displayName ?? '');
+        final username = UserModel.generateUsername(userData.displayName ?? '');
+
+        final user = UserModel(
+          id: userData.uid,
+          firstName: nameParts[0],
+          lastName: nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '',
+          username: username,
+          email: userData.email ?? '',
+          phoneNumber: userData.phoneNumber ?? '',
+          profilePicture: userData.photoURL ?? '',
+        );
+
+        try {
+          await ref.read(userRepositoryProvider).saveUserRecord(user);
+        } catch (e) {
+          TSnacksLoader.warningSnackBar(
+            title: 'Data not saved',
+            message:
+                'Something went wrong while saving your information. You can re-save your data in your Profile',
+          );
+        }
+      }
     } catch (e) {
       TSnacksLoader.errorSnackBar(title: 'Oh Snap!', message: e.toString());
     } finally {
@@ -132,6 +167,6 @@ class LoginController extends Notifier<LoginState> {
   }
 }
 
-final loginControllerProvider = NotifierProvider<LoginController, LoginState>(
+final loginControllerProvider = NotifierProvider.autoDispose<LoginController, LoginState>(
   LoginController.new,
 );

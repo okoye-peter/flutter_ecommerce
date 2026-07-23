@@ -7,17 +7,20 @@ import 'package:ecommerce/core/widgets/products/product_card_vertical.dart';
 import 'package:ecommerce/core/widgets/products/product_grid_view.dart';
 import 'package:ecommerce/core/widgets/search/search_container.dart';
 import 'package:ecommerce/core/widgets/texts/section_heading.dart';
+import 'package:ecommerce/viewmodels/auth/user_controller.dart';
 import 'package:ecommerce/views/home/widgets/home_app_bar.dart';
 import 'package:ecommerce/views/home/widgets/home_categories.dart';
 import 'package:ecommerce/views/home/widgets/promo_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -50,7 +53,7 @@ class HomeScreen extends StatelessWidget {
 
                         // categories
                         THomeCategories(),
-                        const SizedBox(height: TSizes.spaceBtwSections,)
+                        const SizedBox(height: TSizes.spaceBtwSections),
                       ],
                     ),
                   ),
@@ -82,7 +85,10 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: TSizes.spaceBtwSections),
 
                   // products
-                  TProductGridView(itemBuilder: (BuildContext context, int index) => TProductCardVertical(),)
+                  TProductGridView(
+                    itemBuilder: (BuildContext context, int index) =>
+                        TProductCardVertical(),
+                  ),
                 ],
               ),
             ),
