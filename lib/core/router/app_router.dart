@@ -44,7 +44,6 @@ abstract final class AppRoutes {
   static String productDetails(String id) => '/products/$id';
   static const productReviewsPath = '/products/:productId/reviews';
   static String productReviews(String id) => '/products/$id/reviews';
-  static const home = '/home';
   static const brands = '/brands';
   static const brandProductsPath = '/brands/:brandId/products';
   static String brandProducts(String id) => '/brands/$id/products';
@@ -84,16 +83,21 @@ final goRouterProvider = Provider<GoRouter>((ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   final localStorage = ref.watch(localStorageProvider);
 
-  return GoRouter(
+  final refreshStream = GoRouterRefreshStream(authRepository.authStateChanges);
+  ref.onDispose(refreshStream.dispose);
+
+  final router = GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: AppRoutes.onboarding,
-    refreshListenable: GoRouterRefreshStream(authRepository.authStateChanges),
+    refreshListenable: refreshStream,
     redirect: (context, state) {
       final onOnboardingRoute = state.matchedLocation == AppRoutes.onboarding;
 
-      // First launch: let onboarding play out untouched.
+      // First launch: let onboarding play out untouched, but don't let a
+      // deep link (push notification, universal link, etc.) skip straight
+      // past it into an authenticated-only screen.
       if (!localStorage.hasSeenOnboarding) {
-        return null;
+        return onOnboardingRoute ? null : AppRoutes.onboarding;
       }
 
       final user = authRepository.currentUser;
@@ -165,11 +169,15 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.productDetailsPath,
-        builder: (context, state) => const ProductDetailsScreen(),
+        builder: (context, state) => ProductDetailsScreen(
+          productId: state.pathParameters['productId']!,
+        ),
       ),
       GoRoute(
         path: AppRoutes.productReviewsPath,
-        builder: (context, state) => const ProductReviewsScreen(),
+        builder: (context, state) => ProductReviewsScreen(
+          productId: state.pathParameters['productId']!,
+        ),
       ),
       GoRoute(
         path: AppRoutes.address,
@@ -201,8 +209,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.brandProductsPath,
-        builder: (context, state) => const BrandProductsScreen(),
+        builder: (context, state) => BrandProductsScreen(
+          brandId: state.pathParameters['brandId']!,
+        ),
       ),
     ],
   );
+
+  ref.onDispose(router.dispose);
+  return router;
 });

@@ -4,7 +4,6 @@ import 'package:ecommerce/core/widgets/loaders/shimmer_effect.dart';
 import 'package:ecommerce/viewmodels/categories/category_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce/core/constants/colors.dart';
-import 'package:ecommerce/core/constants/image_strings.dart';
 import 'package:ecommerce/views/home/widgets/vertical_image_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -27,9 +26,9 @@ class THomeCategories extends ConsumerWidget {
           itemBuilder: (_, _) => const Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              TShimmerEffect(width: 56, height: 56, radius: 56),
+              TShimmerEffect(width: 55, height: 55, radius: 55),
               SizedBox(height: TSizes.spaceBtwItem / 2),
-              TShimmerEffect(width: 56, height: 10),
+              TShimmerEffect(width: 55, height: 9),
             ],
           ),
         ),

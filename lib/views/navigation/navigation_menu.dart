@@ -6,6 +6,7 @@ import 'package:ecommerce/views/store/store.dart';
 import 'package:ecommerce/views/wishlists/wishlist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 
 final navigationIndexProvider = StateProvider<int>((ref) => 0);
 

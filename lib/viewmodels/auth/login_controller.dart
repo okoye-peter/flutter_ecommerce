@@ -32,7 +32,7 @@ class LoginState {
   }
 }
 
-class LoginController extends AutoDisposeNotifier<LoginState> {
+class LoginController extends Notifier<LoginState> {
   late final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();

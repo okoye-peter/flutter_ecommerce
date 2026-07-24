@@ -6,7 +6,9 @@ import 'package:ecommerce/views/products/widgets/product_user_review_card.dart';
 import 'package:flutter/material.dart';
 
 class ProductReviewsScreen extends StatelessWidget {
-  const ProductReviewsScreen({super.key});
+  const ProductReviewsScreen({super.key, required this.productId});
+
+  final String productId;
 
   @override
   Widget build(BuildContext context) {

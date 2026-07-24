@@ -6,7 +6,9 @@ import 'package:ecommerce/core/widgets/products/sortable_products.dart';
 import 'package:flutter/material.dart';
 
 class BrandProductsScreen extends StatelessWidget {
-  const BrandProductsScreen({super.key});
+  const BrandProductsScreen({super.key, required this.brandId});
+
+  final String brandId;
 
   @override
   Widget build(BuildContext context) {

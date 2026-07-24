@@ -3,6 +3,7 @@ import 'package:ecommerce/core/widgets/grids/grid_layout.dart';
 import 'package:ecommerce/core/widgets/products/product_card_vertical.dart';
 import 'package:ecommerce/core/widgets/texts/section_heading.dart';
 import 'package:ecommerce/models/brand_model.dart';
+import 'package:ecommerce/models/category_model.dart';
 import 'package:ecommerce/views/store/widgets/brand_showcase.dart';
 import 'package:flutter/material.dart';
 

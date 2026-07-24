@@ -12,7 +12,9 @@ import 'package:go_router/go_router.dart';
 import 'package:readmore/readmore.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
-  const ProductDetailsScreen({super.key});
+  const ProductDetailsScreen({super.key, required this.productId});
+
+  final String productId;
 
   @override
   Widget build(BuildContext context) {
@@ -91,8 +93,9 @@ class ProductDetailsScreen extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                          onPressed: () =>
-                              context.push(AppRoutes.productReviews('1')),
+                          onPressed: () => context.push(
+                            AppRoutes.productReviews(productId),
+                          ),
                           icon: const Icon(Icons.arrow_forward_ios, size: 18),
                         ),
                       ],

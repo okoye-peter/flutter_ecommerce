@@ -12,7 +12,7 @@ const _resendCooldown = 60;
 
 /// State is the number of seconds left before a resend is allowed; 0 means
 /// resend is available.
-class ForgotPasswordController extends AutoDisposeNotifier<int> {
+class ForgotPasswordController extends Notifier<int> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   Timer? _resendTimer;

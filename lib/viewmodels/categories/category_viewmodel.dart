@@ -4,7 +4,7 @@ import 'package:ecommerce/models/category_model.dart';
 import 'package:ecommerce/repositories/category_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CategoryViewModel extends AutoDisposeAsyncNotifier<List<CategoryModel>> {
+class CategoryViewModel extends AsyncNotifier<List<CategoryModel>> {
   late final CategoryRepository _categoryRepository;
 
   @override
@@ -21,7 +21,7 @@ class CategoryViewModel extends AutoDisposeAsyncNotifier<List<CategoryModel>> {
   }
 
   List<CategoryModel> getFeatureCategories() {
-    final categories = state.valueOrNull ?? [];
+    final categories = state.value ?? [];
     return categories
         .where((cat) => cat.isFeatured && cat.parentId.isEmpty)
         .take(8)
@@ -29,4 +29,4 @@ class CategoryViewModel extends AutoDisposeAsyncNotifier<List<CategoryModel>> {
   }
 }
 
-final categoriesProvider = AutoDisposeAsyncNotifierProvider<CategoryViewModel, List<CategoryModel>>(CategoryViewModel.new);
+final categoriesProvider = AsyncNotifierProvider<CategoryViewModel, List<CategoryModel>>(CategoryViewModel.new);

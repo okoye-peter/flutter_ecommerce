@@ -31,7 +31,7 @@ class SignupState {
   }
 }
 
-class SignupController extends AutoDisposeNotifier<SignupState> {
+class SignupController extends Notifier<SignupState> {
   late final formKey = GlobalKey<FormState>();
   late final firstNameController = TextEditingController();
   late final lastNameController = TextEditingController();

@@ -10,8 +10,7 @@ class EmailVerificationState {
   final bool isVerified;
 }
 
-class EmailVerificationController
-    extends AutoDisposeNotifier<EmailVerificationState> {
+class EmailVerificationController extends Notifier<EmailVerificationState> {
   Timer? _pollTimer;
 
   @override
