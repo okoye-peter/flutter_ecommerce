@@ -65,14 +65,15 @@ class HomeScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(TSizes.defaultSpace),
               child: Column(
                 children: [
-                  const TPromoSlider(
-                    banners: [
-                      TImages.promoBanner1,
-                      TImages.promoBanner2,
-                      TImages.promoBanner3,
-                      TImages.promoBanner6,
-                    ],
-                  ),
+                  // const TPromoSlider(
+                  //   banners: [
+                  //     TImages.promoBanner1,
+                  //     TImages.promoBanner2,
+                  //     TImages.promoBanner3,
+                  //     TImages.promoBanner6,
+                  //   ],
+                  // ),
+                  const TPromoSlider(),
 
                   const SizedBox(height: TSizes.spaceBtwSections),
 

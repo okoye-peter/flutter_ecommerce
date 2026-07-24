@@ -6,6 +6,7 @@ import 'package:ecommerce/firebase_options.dart';
 import 'package:ecommerce/repositories/authentication_repository.dart';
 import 'package:ecommerce/repositories/cloudinary_repository.dart';
 import 'package:ecommerce/repositories/user_repository.dart';
+import 'package:ecommerce/scripts/banner_seeder.dart';
 import 'package:ecommerce/scripts/category_seeder.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,9 @@ void main() async {
 
   // TODO: remove after seeding once — populates the Categories collection.
   // await seedCategories(cloudinaryRepository);
+
+  // TODO: remove after seeding once — populates the Banners collection.
+  // await seedBanners(cloudinaryRepository);
 
   // init local storage (Shared preference)
   final localStorage = await LocalStorage().init();
