@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce/core/constants/colors.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/helpers/helper_functions.dart';
@@ -39,7 +40,12 @@ class TVerticalImageText extends StatelessWidget {
                     backgroundColor ?? (isDark ? TColors.black : TColors.white),
                 borderRadius: BorderRadius.circular(100),
               ),
-              child: Image(image: AssetImage(image), fit: BoxFit.contain, color: isDark ? TColors.white : TColors.black,),
+              child: CachedNetworkImage(
+                imageUrl: image,
+                fit: BoxFit.contain,
+                color: isDark ? TColors.white : TColors.black,
+                colorBlendMode: BlendMode.srcIn,
+              ),
             ),
 
             const SizedBox(height: TSizes.spaceBtwItem / 2),

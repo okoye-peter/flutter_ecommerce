@@ -7,7 +7,6 @@ import 'package:ecommerce/core/widgets/products/product_card_vertical.dart';
 import 'package:ecommerce/core/widgets/products/product_grid_view.dart';
 import 'package:ecommerce/core/widgets/search/search_container.dart';
 import 'package:ecommerce/core/widgets/texts/section_heading.dart';
-import 'package:ecommerce/viewmodels/auth/user_controller.dart';
 import 'package:ecommerce/views/home/widgets/home_app_bar.dart';
 import 'package:ecommerce/views/home/widgets/home_categories.dart';
 import 'package:ecommerce/views/home/widgets/promo_slider.dart';
