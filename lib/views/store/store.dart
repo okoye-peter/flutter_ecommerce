@@ -15,26 +15,30 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class StoreScreen extends ConsumerWidget {
   const StoreScreen({super.key});
 
-  static const _brands = [
+  static final _brands = [
     BrandModel(
+      id: '1',
       image: TImages.nikeBrandLogo,
-      title: 'Nike',
-      products: '256 products',
+      name: 'Nike',
+      productsCount: 256,
     ),
     BrandModel(
+      id: '2',
       image: TImages.adidasBrandLogo,
-      title: 'Adidas',
-      products: '120 products',
+      name: 'Adidas',
+      productsCount: 120,
     ),
     BrandModel(
+      id: '3',
       image: TImages.jordanBrandLogo,
-      title: 'Apple',
-      products: '85 products',
+      name: 'Apple',
+      productsCount: 85,
     ),
     BrandModel(
+      id: '4',
       image: TImages.pumaBrandLogo,
-      title: 'Puma',
-      products: '98 products',
+      name: 'Puma',
+      productsCount: 98,
     ),
   ];
 

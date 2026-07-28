@@ -36,8 +36,8 @@ class TStoreHeader extends StatelessWidget {
             final brand = brands[index];
             return TBrandCard(
               image: brand.image,
-              title: brand.title,
-              productCount: brand.products,
+              title: brand.name,
+              productCount: '${brand.productsCount ?? 0} products',
               onTap: () {},
             );
           },

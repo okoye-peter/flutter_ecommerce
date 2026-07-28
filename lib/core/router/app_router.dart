@@ -19,6 +19,7 @@ import 'package:ecommerce/views/products/product_review.dart';
 import 'package:ecommerce/views/profile/profile.dart';
 import 'package:ecommerce/views/settings/address/add_new_address.dart';
 import 'package:ecommerce/views/settings/address/address.dart';
+import 'package:ecommerce/views/settings/upload_data/upload_data_screen.dart';
 import 'package:ecommerce/views/sub_categories/sub_categories_screen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,6 +40,7 @@ abstract final class AppRoutes {
   static const profile = '/profile';
   static const addNewAddress = '/profile/address/create';
   static const address = '/profile/address';
+  static const uploadData = '/profile/upload_data';
   static const products = '/products';
   static const productDetailsPath = '/products/:productId';
   static String productDetails(String id) => '/products/$id';
@@ -186,6 +188,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.addNewAddress,
         builder: (context, state) => const AddNewAddressScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.uploadData,
+        builder: (context, state) => const UploadDataScreen(),
       ),
       GoRoute(
         path: AppRoutes.carts,

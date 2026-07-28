@@ -1,15 +1,19 @@
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/widgets/grids/grid_layout.dart';
 import 'package:ecommerce/core/widgets/products/product_card_vertical.dart';
+import 'package:ecommerce/viewmodels/products/featured_products_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TSortableProducts extends StatelessWidget {
+class TSortableProducts extends ConsumerWidget {
   const TSortableProducts({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final featuredProducts = ref.watch(featuredProductsProvider);
+
     return Column(
       children: [
         // Dropdown
@@ -32,7 +36,17 @@ class TSortableProducts extends StatelessWidget {
         const SizedBox(height: TSizes.spaceBtwSections,),
 
         // Products
-        TGridLayout(itemCount: 8, itemBuilder: (context, index) => TProductCardVertical())
+        featuredProducts.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stackTrace) => Text(error.toString()),
+          data: (products) {
+            if (products.isEmpty) return const Center(child: Text('No Data!'));
+            return TGridLayout(
+              itemCount: products.length,
+              itemBuilder: (context, index) => TProductCardVertical(product: products[index]),
+            );
+          },
+        ),
       ],
     );
   }

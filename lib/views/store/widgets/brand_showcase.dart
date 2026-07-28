@@ -34,8 +34,8 @@ class TBrandShowCase extends StatelessWidget {
         children: [
           TBrandCard(
             image: brand.image,
-            title: brand.title,
-            productCount: brand.products,
+            title: brand.name,
+            productCount: '${brand.productsCount ?? 0} products',
             showBorder: false,
           ),
           Row(

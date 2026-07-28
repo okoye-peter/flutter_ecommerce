@@ -6,8 +6,7 @@ import 'package:ecommerce/firebase_options.dart';
 import 'package:ecommerce/repositories/authentication_repository.dart';
 import 'package:ecommerce/repositories/cloudinary_repository.dart';
 import 'package:ecommerce/repositories/user_repository.dart';
-import 'package:ecommerce/scripts/banner_seeder.dart';
-import 'package:ecommerce/scripts/category_seeder.dart';
+import 'package:ecommerce/scripts/product_seeder.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -25,13 +24,17 @@ void main() async {
 
   final authRepository = AuthenticationRepository();
   final userRepository = UserRepository(authenticationRepository: authRepository);
-  // final cloudinaryRepository = CloudinaryRepository();
+  final cloudinaryRepository = CloudinaryRepository();
 
   // TODO: remove after seeding once — populates the Categories collection.
   // await seedCategories(cloudinaryRepository);
 
   // TODO: remove after seeding once — populates the Banners collection.
   // await seedBanners(cloudinaryRepository);
+
+  // TODO: remove after seeding once — populates the Products collection.
+  // Requires seedCategories to have run first (products reference category IDs).
+  await seedProducts(cloudinaryRepository);
 
   // init local storage (Shared preference)
   final localStorage = await LocalStorage().init();
@@ -45,13 +48,17 @@ void main() async {
       secureStorageProvider.overrideWithValue(secureStorage),
       authRepositoryProvider.overrideWithValue(authRepository),
       userRepositoryProvider.overrideWithValue(userRepository),
-      // cloudinaryRepositoryProvider.overrideWithValue(cloudinaryRepository),
+      cloudinaryRepositoryProvider.overrideWithValue(cloudinaryRepository),
     ],
   );
 
   // wait for Firebase to resolve any persisted session before showing a screen,
-  // so the router's redirect doesn't flash the login screen first.
-  await container.read(authStateChangesProvider.future);
+  // so the router's redirect doesn't flash the login screen first. Read the
+  // repository's stream directly rather than `authStateChangesProvider.future`:
+  // the Riverpod StreamProvider's future never resolves here even though the
+  // underlying Firebase stream emits immediately, so going through the
+  // container hangs the splash screen forever.
+  await authRepository.authStateChanges.first;
   FlutterNativeSplash.remove();
 
   runApp(UncontrolledProviderScope(container: container, child: const App()));

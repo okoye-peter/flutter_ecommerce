@@ -134,7 +134,7 @@ class SettingsScreen extends ConsumerWidget {
                     icon: Icons.upload_outlined,
                     title: 'Load Data',
                     subTitle: 'Upload data to your Cloud Firebase',
-                    onTap: () {},
+                    onTap: () => context.push(AppRoutes.uploadData),
                   ),
                   TSettingMenuTiles(
                     icon: Icons.location_on_outlined,

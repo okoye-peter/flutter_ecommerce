@@ -3,11 +3,12 @@ import 'package:ecommerce/core/widgets/grids/grid_layout.dart';
 import 'package:ecommerce/core/widgets/products/product_card_vertical.dart';
 import 'package:ecommerce/core/widgets/texts/section_heading.dart';
 import 'package:ecommerce/models/brand_model.dart';
-import 'package:ecommerce/models/category_model.dart';
+import 'package:ecommerce/viewmodels/products/featured_products_controller.dart';
 import 'package:ecommerce/views/store/widgets/brand_showcase.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TCategoryTab extends StatelessWidget {
+class TCategoryTab extends ConsumerWidget {
   const TCategoryTab({
     super.key,
     required this.brand,
@@ -22,7 +23,9 @@ class TCategoryTab extends StatelessWidget {
   final String imgUrl3;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final featuredProducts = ref.watch(featuredProductsProvider);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(TSizes.defaultSpace),
       child: Column(
@@ -40,7 +43,18 @@ class TCategoryTab extends StatelessWidget {
 
           const SizedBox(height: TSizes.spaceBtwItem),
 
-          TGridLayout(itemCount: 4, mainAxisExtent: 276, itemBuilder: (_, index) => TProductCardVertical())
+          featuredProducts.when(
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, stackTrace) => Text(error.toString()),
+            data: (products) {
+              if (products.isEmpty) return const Center(child: Text('No Data!'));
+              return TGridLayout(
+                itemCount: products.length,
+                mainAxisExtent: 276,
+                itemBuilder: (_, index) => TProductCardVertical(product: products[index]),
+              );
+            },
+          ),
         ],
       ),
     );

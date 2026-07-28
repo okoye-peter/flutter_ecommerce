@@ -19,3 +19,5 @@ class PaymentMethods {
   static const String razorPay = 'razorPay';
   static const String paytm = 'paytm';
 }
+
+enum ProductType { single, variable }

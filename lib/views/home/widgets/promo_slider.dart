@@ -7,6 +7,7 @@ import 'package:ecommerce/core/widgets/loaders/shimmer_effect.dart';
 import 'package:ecommerce/viewmodels/banners/banner_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class TPromoSlider extends ConsumerWidget {
   const TPromoSlider({super.key});
@@ -20,15 +21,18 @@ class TPromoSlider extends ConsumerWidget {
       loading: () => Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          TShimmerEffect(width: double.infinity, height: 70, radius: 6,),
-          const SizedBox(height: 5,),
+          TShimmerEffect(width: double.infinity, height: 200, radius: 6,),
+          const SizedBox(height: TSizes.spaceBtwItem),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TShimmerEffect(width: 12, height: 2, radius: 2,),
-              const SizedBox(width: 2,),
-              TShimmerEffect(width: 12, height: 2, radius: 2,),
-              const SizedBox(width: 2,),
-              TShimmerEffect(width: 12, height: 2, radius: 2,),
+              TShimmerEffect(width: 20, height: 4, radius: 2,),
+              const SizedBox(width: 10,),
+              TShimmerEffect(width: 20, height: 4, radius: 2,),
+              const SizedBox(width: 10,),
+              TShimmerEffect(width: 20, height: 4, radius: 2,),
+              const SizedBox(width: 10,),
+              TShimmerEffect(width: 20, height: 4, radius: 2,),
             ],
           )
         ],
@@ -39,13 +43,16 @@ class TPromoSlider extends ConsumerWidget {
           CarouselSlider(
             items: bannerData.banners
                 .map(
-                  (banner) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: TRoundedImage(
-                      imageUrl: banner.imageUrl,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      isNetworkImage: true,
+                  (banner) => GestureDetector(
+                    onTap: () => context.push(banner.targetScreen),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: TRoundedImage(
+                        imageUrl: banner.imageUrl,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        isNetworkImage: true,
+                      ),
                     ),
                   ),
                 )
