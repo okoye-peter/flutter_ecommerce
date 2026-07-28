@@ -6,7 +6,6 @@ import 'package:ecommerce/firebase_options.dart';
 import 'package:ecommerce/repositories/authentication_repository.dart';
 import 'package:ecommerce/repositories/cloudinary_repository.dart';
 import 'package:ecommerce/repositories/user_repository.dart';
-import 'package:ecommerce/scripts/product_seeder.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -33,8 +32,8 @@ void main() async {
   // await seedBanners(cloudinaryRepository);
 
   // TODO: remove after seeding once — populates the Products collection.
-  // Requires seedCategories to have run first (products reference category IDs).
-  await seedProducts(cloudinaryRepository);
+  //   Requires seedCategories to have run first (products reference category IDs).
+//   await seedProducts(cloudinaryRepository);
 
   // init local storage (Shared preference)
   final localStorage = await LocalStorage().init();

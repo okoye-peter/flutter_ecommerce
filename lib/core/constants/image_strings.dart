@@ -76,7 +76,7 @@ class TImages {
   static const String productImage9 =
       "assets/images/products/Timberland boots fashionstation 0608 2048.jpeg";
   static const String productImage10 =
-      "assets/images/products/Your vintage wears and short _DM us for yours _Limited stock _Available in all sìzes _S,M, L, XL, XXL _WhatsApp us here _+2349017695706.jpeg";
+      "assets/images/products/vintage_wears_and_shorts.jpeg";
   static const String productImage11 = "assets/images/products/_ (1).jpeg";
   static const String productImage12 = "assets/images/products/_ (2).jpeg";
   static const String productImage13 = "assets/images/products/_.jpeg";

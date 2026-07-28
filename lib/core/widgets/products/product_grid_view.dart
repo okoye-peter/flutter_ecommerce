@@ -5,8 +5,8 @@ class TProductGridView extends StatelessWidget {
   const TProductGridView({
     super.key,
     this.itemCount = 4,
-    this.mainAxisExtent = 276,
-    required this.itemBuilder
+    this.mainAxisExtent = 304,
+    required this.itemBuilder,
   });
 
   final int itemCount;

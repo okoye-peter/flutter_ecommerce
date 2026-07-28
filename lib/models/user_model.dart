@@ -26,7 +26,7 @@ class UserModel {
 
   static List<String> nameParts(String fullName) => fullName.split(' ');
 
-  static String generateUsername(fullName) {
+  static String generateUsername(String fullName) {
     List<String> nameParts = fullName.split(' ');
     String firstName = nameParts[0].toLowerCase();
     String lastName = nameParts.length > 1 ? nameParts[1].toLowerCase() : '';

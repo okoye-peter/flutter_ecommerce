@@ -17,11 +17,15 @@ class FavoriteScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: TAppBar(
-        title: Text('Wishlist', style: Theme.of(context).textTheme.headlineMedium),
+        title: Text(
+          'Wishlist',
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
         actions: [
           TCircularIcon(
             icon: Icons.add,
-            onPressed: () => ref.read(navigationIndexProvider.notifier).state = 0,
+            onPressed: () =>
+                ref.read(navigationIndexProvider.notifier).state = 0,
           ),
         ],
       ),
@@ -33,16 +37,18 @@ class FavoriteScreen extends ConsumerWidget {
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, stackTrace) => Text(error.toString()),
               data: (products) {
-                if (products.isEmpty) return const Center(child: Text('No Data!'));
+                if (products.isEmpty) {
+                  return const Center(child: Text('No Data!'));
+                }
                 return TGridLayout(
                   itemCount: products.length,
-                  mainAxisExtent: 276,
-                  itemBuilder: (_, index) => TProductCardVertical(product: products[index]),
+                  itemBuilder: (_, index) =>
+                      TProductCardVertical(product: products[index]),
                 );
               },
             ),
           ],
-        )
+        ),
       ),
     );
   }

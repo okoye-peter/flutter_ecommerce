@@ -39,7 +39,7 @@ class TCategoryTab extends ConsumerWidget {
 
           const SizedBox(height: TSizes.spaceBtwItem),
 
-          TSectionHeading(title: 'You may also like', onPressed: () {},),
+          TSectionHeading(title: 'You may also like', onPressed: () {}),
 
           const SizedBox(height: TSizes.spaceBtwItem),
 
@@ -47,11 +47,13 @@ class TCategoryTab extends ConsumerWidget {
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (error, stackTrace) => Text(error.toString()),
             data: (products) {
-              if (products.isEmpty) return const Center(child: Text('No Data!'));
+              if (products.isEmpty) {
+                return const Center(child: Text('No Data!'));
+              }
               return TGridLayout(
                 itemCount: products.length,
-                mainAxisExtent: 276,
-                itemBuilder: (_, index) => TProductCardVertical(product: products[index]),
+                itemBuilder: (_, index) =>
+                    TProductCardVertical(product: products[index]),
               );
             },
           ),

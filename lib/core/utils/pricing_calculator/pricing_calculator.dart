@@ -1,3 +1,4 @@
+
 class TPricingCalculator {
   static double calculateTotalPrice(double productPrice, String location) {
     double taxeRate = getTaxRateForLocation(location);

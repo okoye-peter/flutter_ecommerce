@@ -27,7 +27,7 @@ class TProductCardVerticalShimmer extends StatelessWidget {
           children: [
             // thumbnail placeholder
             Container(
-              height: 180,
+              height: 180 - TSizes.sm * 2,
               width: double.infinity,
               margin: const EdgeInsets.all(TSizes.sm),
               decoration: BoxDecoration(
@@ -55,10 +55,7 @@ class TProductCardVerticalShimmer extends StatelessWidget {
 
             // price + add-to-cart placeholders
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: TSizes.sm,
-                vertical: TSizes.sm,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: TSizes.sm),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

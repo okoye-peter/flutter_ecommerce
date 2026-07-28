@@ -58,7 +58,7 @@ class TAppToasts {
       primaryColor: color,
       borderRadius: BorderRadius.circular(12),
       showProgressBar: false,
-      closeButtonShowType: CloseButtonShowType.onHover,
+      closeButton: const ToastCloseButton(showType: CloseButtonShowType.onHover),
       dragToClose: true,
     );
   }

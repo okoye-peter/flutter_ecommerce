@@ -1,4 +1,5 @@
 import 'package:ecommerce/core/constants/colors.dart';
+import 'package:ecommerce/core/constants/enums.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/helpers/helper_functions.dart';
 import 'package:ecommerce/core/helpers/pricing_helper.dart';
@@ -44,15 +45,21 @@ class TProductCardVertical extends ConsumerWidget {
             // thumbnail, wishlist button, discount tag
             TRoundedContainer(
               height: 180,
+              width: 180,
               padding: const EdgeInsets.all(TSizes.sm),
               backgroundColor: dark ? TColors.dark : TColors.light,
               child: Stack(
                 children: [
                   // Thumbnail images
-                  TRoundedImage(
-                    imageUrl: product.thumbnail,
-                    applyImageRadius: true,
-                    fit: BoxFit.contain,
+                  Center(
+                    child: TRoundedImage(
+                      imageUrl: product.thumbnail,
+                      isNetworkImage: true,
+                      applyImageRadius: true,
+                      width: double.infinity,
+                      height: double.infinity,
+                      fit: BoxFit.contain,
+                    ),
                   ),
 
                   // Sale tag
@@ -69,9 +76,8 @@ class TProductCardVertical extends ConsumerWidget {
                         ),
                         child: Text(
                           '$salePercentage%',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.labelLarge!.copyWith(color: TColors.black),
+                          style: Theme.of(context).textTheme.labelLarge!
+                              .copyWith(color: TColors.black),
                         ),
                       ),
                     ),
@@ -101,7 +107,9 @@ class TProductCardVertical extends ConsumerWidget {
                   const SizedBox(height: TSizes.spaceBtwItem / 2),
                   Row(
                     children: [
-                      TBrandTitleText(title: product.brand!.name),
+                      Flexible(
+                        child: TBrandTitleText(title: product.brand!.name),
+                      ),
                       const SizedBox(width: TSizes.xs),
                       Icon(
                         Icons.check_circle,
@@ -122,10 +130,20 @@ class TProductCardVertical extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: TSizes.sm),
-                  child: TProductPriceText(
-                    price: TPricingHelper.getProductPrice(product),
+                Flexible(
+                  child: Column(
+                    children: [
+                      if(product.productType == ProductType.single.toString() && product.salePrice > 0)
+                        Text(product.price.toString(), style: Theme.of(context).textTheme.labelMedium!.apply(decoration: TextDecoration.lineThrough),),
+
+                      Padding(
+                        padding: const EdgeInsets.only(left: TSizes.sm),
+                        child: TProductPriceText(
+                          price: TPricingHelper.getProductPrice(product),
+                          smallSize: true,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
 
