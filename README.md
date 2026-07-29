@@ -53,7 +53,21 @@ lib/
    `lib/core/config/cloudinary_config.dart` before using any upload-dependent features
    (e.g. `lib/scripts/category_seeder.dart`).
 
-5. **Run the app**
+5. **Seed sample data** — a fresh Firebase project has an empty `Products`/`Categories`/
+   `Banners` collection, so most screens will look empty until you seed them. Run the app,
+   sign in, then go to **Profile → Upload Data** (`/profile/upload_data`) and tap, in order:
+
+   1. **Upload Categories** — products reference category doc IDs, so this has to run first.
+   2. **Upload Products** — includes a handful of "variable" products (multiple attributes/
+      variations) for exercising that flow.
+   3. **Upload Banners** — independent of the other two, any order is fine.
+
+   This is safe to re-run any time — the seeders use deterministic document IDs, so
+   re-uploading overwrites the same documents instead of duplicating them. (The "Upload
+   Brands" and "...Relation Data" tiles on that screen aren't implemented yet — brand data
+   is embedded directly in each product document by the product seeder.)
+
+6. **Run the app**
 
    ```sh
    flutter run
