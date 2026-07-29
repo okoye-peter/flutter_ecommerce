@@ -35,7 +35,10 @@ class HomeScreen extends ConsumerWidget {
                   const SizedBox(height: TSizes.spaceBtwSections),
 
                   // search bar
-                  const TSearchContainer(text: 'Search in store'),
+                  GestureDetector(
+                    onTap: () => context.push(AppRoutes.search),
+                    child: const TSearchContainer(text: 'Search in store'),
+                  ),
                   const SizedBox(height: TSizes.spaceBtwSections),
 
                   // categories

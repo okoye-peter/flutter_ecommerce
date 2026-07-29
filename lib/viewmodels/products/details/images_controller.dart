@@ -30,8 +30,8 @@ class ImagesState {
 @riverpod
 class ImagesController extends _$ImagesController {
   @override
-  ImagesState build() {
-    return ImagesState(selectedProductImage: '');
+  ImagesState build(String defaultImage) {
+    return ImagesState(selectedProductImage: defaultImage);
   }
 
   void selectImage(String image) {

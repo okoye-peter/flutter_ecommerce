@@ -20,11 +20,14 @@ class TStoreHeader extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       children: [
         const SizedBox(height: TSizes.spaceBtwItem),
-        const TSearchContainer(
-          text: '',
-          showBorder: true,
-          showBackground: false,
-          padding: EdgeInsets.zero,
+        GestureDetector(
+          onTap: () => context.push(AppRoutes.search),
+          child: const TSearchContainer(
+            text: '',
+            showBorder: true,
+            showBackground: false,
+            padding: EdgeInsets.zero,
+          ),
         ),
         const SizedBox(height: TSizes.spaceBtwSections),
         TSectionHeading(title: 'Feature Brands', onPressed: () => context.push(AppRoutes.brands)),

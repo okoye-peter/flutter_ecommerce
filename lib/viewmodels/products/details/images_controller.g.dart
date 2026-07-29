@@ -87,23 +87,30 @@ final class ProductImagesFamily extends $Family
 }
 
 @ProviderFor(ImagesController)
-final imagesControllerProvider = ImagesControllerProvider._();
+final imagesControllerProvider = ImagesControllerFamily._();
 
 final class ImagesControllerProvider
     extends $NotifierProvider<ImagesController, ImagesState> {
-  ImagesControllerProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'imagesControllerProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
+  ImagesControllerProvider._({
+    required ImagesControllerFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'imagesControllerProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$imagesControllerHash();
+
+  @override
+  String toString() {
+    return r'imagesControllerProvider'
+        ''
+        '($argument)';
+  }
 
   @$internal
   @override
@@ -116,12 +123,50 @@ final class ImagesControllerProvider
       providerOverride: $SyncValueProvider<ImagesState>(value),
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ImagesControllerProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
 }
 
-String _$imagesControllerHash() => r'e0453f3ebfbc143dad959225a6e736829179aa54';
+String _$imagesControllerHash() => r'5b4c98d6627ec1a6a76cbfbb28cff46a4e0ca099';
+
+final class ImagesControllerFamily extends $Family
+    with
+        $ClassFamilyOverride<
+          ImagesController,
+          ImagesState,
+          ImagesState,
+          ImagesState,
+          String
+        > {
+  ImagesControllerFamily._()
+    : super(
+        retry: null,
+        name: r'imagesControllerProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  ImagesControllerProvider call(String defaultImage) =>
+      ImagesControllerProvider._(argument: defaultImage, from: this);
+
+  @override
+  String toString() => r'imagesControllerProvider';
+}
 
 abstract class _$ImagesController extends $Notifier<ImagesState> {
-  ImagesState build();
+  late final _$args = ref.$arg as String;
+  String get defaultImage => _$args;
+
+  ImagesState build(String defaultImage);
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
@@ -134,6 +179,6 @@ abstract class _$ImagesController extends $Notifier<ImagesState> {
               Object?,
               Object?
             >;
-    return element.handleCreate(ref, build);
+    return element.handleCreate(ref, () => build(_$args));
   }
 }

@@ -17,6 +17,7 @@ import 'package:ecommerce/views/products/all_product_screen.dart';
 import 'package:ecommerce/views/products/product_details.dart';
 import 'package:ecommerce/views/products/product_review.dart';
 import 'package:ecommerce/views/profile/profile.dart';
+import 'package:ecommerce/views/search/search_screen.dart';
 import 'package:ecommerce/views/settings/address/add_new_address.dart';
 import 'package:ecommerce/views/settings/address/address.dart';
 import 'package:ecommerce/views/settings/upload_data/upload_data_screen.dart';
@@ -38,6 +39,7 @@ abstract final class AppRoutes {
   static const resetPassword = '/reset_password';
   static const navigation = '/navigation';
   static const profile = '/profile';
+  static const search = '/search';
   static const addNewAddress = '/profile/address/create';
   static const address = '/profile/address';
   static const uploadData = '/profile/upload_data';
@@ -168,6 +170,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.products,
         builder: (context, state) => const AllProductsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.search,
+        builder: (context, state) => const SearchScreen(),
       ),
       GoRoute(
         path: AppRoutes.productDetailsPath,

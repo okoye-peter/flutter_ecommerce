@@ -14,7 +14,8 @@ class TAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.leadingIcon,
     this.leadingOnPressed,
-    this.showBackArrow = false
+    this.showBackArrow = false,
+    this.horizontalPadding = TSizes.md,
   });
 
   final Widget? title;
@@ -22,6 +23,7 @@ class TAppBar extends StatelessWidget implements PreferredSizeWidget {
   final IconData? leadingIcon;
   final List<Widget>? actions;
   final VoidCallback? leadingOnPressed;
+  final double horizontalPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class TAppBar extends StatelessWidget implements PreferredSizeWidget {
     final IconData backIcon = Platform.isAndroid ? Icons.arrow_back :  Icons.arrow_back_ios;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: TSizes.md),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: AppBar(
         automaticallyImplyLeading: false, 
         leading: showBackArrow 

@@ -19,7 +19,6 @@ class TSectionHeading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
-      
       children: [
         Text(
           title,

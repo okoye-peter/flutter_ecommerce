@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce/core/constants/enums.dart';
 import 'package:ecommerce/core/errors/firebase_exception.dart';
 import 'package:ecommerce/core/errors/format_exception.dart';
 import 'package:ecommerce/core/errors/platform_exception.dart';
@@ -64,12 +65,33 @@ class ProductRepository {
 
   Future<List<ProductModel>> getFeaturedProducts({int? limit = 4}) async {
     try {
+      // Firestore can't query array length directly, so filter to variable
+      // products (which always carry attributes/variations) here and check
+      // the image count client-side.
       final snapshot = await _db
           .collection('Products')
-          .where('IsFeatured', isEqualTo: true)
-          .limit(limit!)
+          .where('ProductType', isEqualTo: ProductType.variable.name)
+          .limit((limit ?? 4) * 3)
           .get();
-      return snapshot.docs.map((e) => ProductModel.fromQuerySnapshot(e)).toList();
+
+          // final snapshot = await _db
+          // .collection('Products')
+          // .where('IsFeatured', isEqualTo: true)
+          // .limit(limit!)
+          // .get();
+
+      final items = snapshot.docs
+          .map((e) => ProductModel.fromQuerySnapshot(e))
+          .where(
+            (product) =>
+                (product.images?.length ?? 0) > 1 &&
+                (product.productAttributes?.isNotEmpty ?? false) &&
+                (product.productVariations?.isNotEmpty ?? false),
+          )
+          .take(limit ?? 4)
+          .toList();
+
+      return items;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code);
     } on FormatException catch (_) {
@@ -78,6 +100,32 @@ class ProductRepository {
       throw TPlatformException(e.code);
     } catch (e, s) {
       debugPrint('ProductRepository.fetchProducts failed: $e\n$s');
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+  /// Case-insensitive title match. Firestore has no native substring query,
+  /// so this filters client-side — fine for a catalog this size, but won't
+  /// scale to a large one without a dedicated search index/service.
+  Future<List<ProductModel>> searchProducts(String query) async {
+    final normalized = query.trim().toLowerCase();
+    if (normalized.isEmpty) return [];
+
+    try {
+      final snapshot = await _db.collection('Products').get();
+
+      return snapshot.docs
+          .map((doc) => ProductModel.fromQuerySnapshot(doc))
+          .where((product) => product.title.toLowerCase().contains(normalized))
+          .toList();
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code);
+    } on FormatException catch (_) {
+      throw const TFormatException();
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code);
+    } catch (e, s) {
+      debugPrint('ProductRepository.searchProducts failed: $e\n$s');
       throw 'Something went wrong. Please try again';
     }
   }

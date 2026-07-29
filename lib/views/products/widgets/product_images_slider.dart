@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce/core/constants/colors.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/styles/shadow.dart';
@@ -6,7 +7,8 @@ import 'package:ecommerce/core/widgets/curved_edges/curved_edge_widget.dart';
 import 'package:ecommerce/core/widgets/icons/circular_icon.dart';
 import 'package:ecommerce/core/widgets/images/rounded_image.dart';
 import 'package:ecommerce/models/product_model.dart';
-import 'package:ecommerce/viewmodels/images/images_controller.dart';
+import 'package:ecommerce/viewmodels/products/details/images_controller.dart';
+import 'package:ecommerce/viewmodels/products/details/variation_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -31,11 +33,37 @@ class _TProductImagesSliderState extends ConsumerState<TProductImagesSlider> {
   //   return images.isNotEmpty ? images : [widget.product.thumbnail];
   // }
 
+  /// Tapping a thumbnail always swaps the displayed photo; if that photo
+  /// also belongs to a specific variation, select it too so the price and
+  /// attribute chips stay in sync, not just the image.
+  void _selectImage(String image) {
+    ref.read(imagesControllerProvider(widget.product.thumbnail).notifier).selectImage(image);
+
+    for (final variation in widget.product.productVariations ?? const []) {
+      if (variation.image.isNotEmpty && variation.image == image) {
+        ref.read(variationControllerProvider.notifier).selectVariation(variation);
+        break;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final images = ref.watch(productImagesProvider(widget.product));
-    final selectedImage = ref.watch(imagesControllerProvider);
-    final imageController = ref.read(imagesControllerProvider.notifier);
+    final selectedImage = ref.watch(imagesControllerProvider(widget.product.thumbnail));
+    final imageController = ref.read(
+      imagesControllerProvider(widget.product.thumbnail).notifier,
+    );
+
+    // Swap the displayed image to match the variation the user just picked.
+    ref.listen(variationControllerProvider, (previous, next) {
+      final image = next.resolvedVariation?.image;
+      if (image != null &&
+          image.isNotEmpty &&
+          image != previous?.resolvedVariation?.image) {
+        imageController.selectImage(image);
+      }
+    });
 
     return TCurvedEdgeWidget(
       child: Container(
@@ -47,16 +75,26 @@ class _TProductImagesSliderState extends ConsumerState<TProductImagesSlider> {
               width: double.infinity,
               child: Padding(
                 padding: const EdgeInsets.all(TSizes.productImageRadius * 2),
-                child: TRoundedImage(
-                  imageUrl: selectedImage.selectedProductImage,
-                  isNetworkImage: true,
-                  width: double.infinity,
-                  height: double.infinity,
-                  fit: BoxFit.contain,
-                  applyImageRadius: false,
-                  backgroundColor: Colors.transparent,
-                  // onPressed: () => ,
+                child:  Center(
+                  child: GestureDetector(
+                    onTap: () =>  imageController.showEnlargeImage(context, selectedImage.selectedProductImage),
+                    child: CachedNetworkImage(
+                      imageUrl: selectedImage.selectedProductImage,
+                      progressIndicatorBuilder: (_, __, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress, color: TColors.primary,),
+                    ),
+                  ),
                 ),
+                // child: TRoundedImage(
+                //   imageUrl: selectedImage.selectedProductImage,
+                //   isNetworkImage: true,
+                //   width: double.infinity,
+                //   height: double.infinity,
+                //   fit: BoxFit.contain,
+                //   applyImageRadius: false,
+                //   backgroundColor: Colors.transparent,
+                //   onPressed: ,
+                //   // onPressed: () => ,
+                // ),
               ),
             ),
 
@@ -72,14 +110,14 @@ class _TProductImagesSliderState extends ConsumerState<TProductImagesSlider> {
                     scrollDirection: Axis.horizontal,
                     physics: const AlwaysScrollableScrollPhysics(),
                     itemBuilder: (_, index) => GestureDetector(
-                      onTap: () => imageController.selectImage(images[index]),
+                      onTap: () => _selectImage(images[index]),
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(TSizes.md),
                           boxShadow: [TShadowStyle.horizontalProductShadow],
-                          border: images[index] == selectedImage.selectedProductImage
-                              ? Border.all(color: TColors.primary, width: 2)
-                              : null,
+                          // border: images[index] == selectedImage.selectedProductImage
+                          //     ? Border.all(color: TColors.primary, width: 2)
+                          //     : null,
                         ),
                         child: TRoundedImage(
                           imageUrl: images[index],
@@ -91,7 +129,7 @@ class _TProductImagesSliderState extends ConsumerState<TProductImagesSlider> {
                               ? TColors.dark
                               : TColors.white,
                           padding: const EdgeInsets.all(TSizes.sm),
-                          border: Border.all(color: selectedImage.selectedProductImage == images[index] ? TColors.primary : Colors.transparent),
+                          border: Border.all(color: selectedImage.selectedProductImage == images[index] ? Colors.grey.shade500 : Colors.transparent),
                         ),
                       ),
                     ),
@@ -103,9 +141,10 @@ class _TProductImagesSliderState extends ConsumerState<TProductImagesSlider> {
               ),
 
             Padding(
-              padding: const EdgeInsets.only(top: TSizes.spaceBtwItem),
+              padding: const EdgeInsets.only(top: TSizes.spaceBtwItem / 3),
               child: TAppBar(
                 showBackArrow: true,
+                horizontalPadding: 0,
                 actions: [
                   TCircularIcon(icon: Icons.favorite, color: Colors.red),
                 ],

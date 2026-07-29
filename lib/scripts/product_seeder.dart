@@ -650,6 +650,107 @@ Future<void> seedProducts(CloudinaryRepository cloudinaryRepository) async {
   );
 
   addProduct(
+    'variation_test_sneakers',
+    title: 'QA Variation Test Sneakers',
+    brand: nike,
+    categoryId: 'sport',
+    thumbnailAssetPath: TImages.productImage3,
+    price: 50.00,
+    salePrice: 0.0,
+    stock: 44,
+    isFeatured: true,
+    productType: 'variable',
+    galleryAssetPaths: [TImages.productImage9, TImages.productImage14],
+    productAttributes: [
+      attribute('Color', ['Red', 'Blue', 'Black']),
+      attribute('Size', ['40', '41', '42']),
+    ],
+    productVariations: [
+      // Red — in stock and on sale, except 42 which is sold out for this
+      // color specifically (Size '42' chip should stay enabled overall
+      // since Blue 42 is in stock, but selecting Red + 42 should still
+      // resolve to an out-of-stock variation).
+      variation(
+        'qa_sneakers_red_40',
+        attributeValues: {'Color': 'Red', 'Size': '40'},
+        price: 50.00,
+        salePrice: 40.00,
+        stock: 10,
+        thumbnailAssetPath: TImages.productImage3,
+      ),
+      variation(
+        'qa_sneakers_red_41',
+        attributeValues: {'Color': 'Red', 'Size': '41'},
+        price: 50.00,
+        salePrice: 40.00,
+        stock: 8,
+        thumbnailAssetPath: TImages.productImage3,
+      ),
+      variation(
+        'qa_sneakers_red_42',
+        attributeValues: {'Color': 'Red', 'Size': '42'},
+        price: 50.00,
+        salePrice: 0.0,
+        stock: 0,
+        thumbnailAssetPath: TImages.productImage3,
+      ),
+
+      // Blue — in stock, no sale except size 42.
+      variation(
+        'qa_sneakers_blue_40',
+        attributeValues: {'Color': 'Blue', 'Size': '40'},
+        price: 55.00,
+        salePrice: 0.0,
+        stock: 12,
+        thumbnailAssetPath: TImages.productImage9,
+      ),
+      variation(
+        'qa_sneakers_blue_41',
+        attributeValues: {'Color': 'Blue', 'Size': '41'},
+        price: 55.00,
+        salePrice: 0.0,
+        stock: 9,
+        thumbnailAssetPath: TImages.productImage9,
+      ),
+      variation(
+        'qa_sneakers_blue_42',
+        attributeValues: {'Color': 'Blue', 'Size': '42'},
+        price: 58.00,
+        salePrice: 45.00,
+        stock: 5,
+        thumbnailAssetPath: TImages.productImage9,
+      ),
+
+      // Black — sold out in every size, so the "Black" chip should render
+      // disabled outright, no matter which size is selected.
+      variation(
+        'qa_sneakers_black_40',
+        attributeValues: {'Color': 'Black', 'Size': '40'},
+        price: 52.00,
+        salePrice: 0.0,
+        stock: 0,
+        thumbnailAssetPath: TImages.productImage14,
+      ),
+      variation(
+        'qa_sneakers_black_41',
+        attributeValues: {'Color': 'Black', 'Size': '41'},
+        price: 52.00,
+        salePrice: 0.0,
+        stock: 0,
+        thumbnailAssetPath: TImages.productImage14,
+      ),
+      variation(
+        'qa_sneakers_black_42',
+        attributeValues: {'Color': 'Black', 'Size': '42'},
+        price: 52.00,
+        salePrice: 0.0,
+        stock: 0,
+        thumbnailAssetPath: TImages.productImage14,
+      ),
+    ],
+  );
+
+  addProduct(
     'car_seat_cover',
     title: 'Premium Car Seat Cover Set',
     brand: puma,

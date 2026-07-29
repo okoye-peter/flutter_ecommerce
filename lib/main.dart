@@ -22,7 +22,9 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   final authRepository = AuthenticationRepository();
-  final userRepository = UserRepository(authenticationRepository: authRepository);
+  final userRepository = UserRepository(
+    authenticationRepository: authRepository,
+  );
   final cloudinaryRepository = CloudinaryRepository();
 
   // TODO: remove after seeding once — populates the Categories collection.
@@ -33,8 +35,7 @@ void main() async {
 
   // TODO: remove after seeding once — populates the Products collection.
   //   Requires seedCategories to have run first (products reference category IDs).
-//   await seedProducts(cloudinaryRepository);
-
+  //   await seedProducts(cloudinaryRepository);
   // init local storage (Shared preference)
   final localStorage = await LocalStorage().init();
 

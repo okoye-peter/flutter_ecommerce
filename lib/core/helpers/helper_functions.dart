@@ -16,6 +16,7 @@ class THelperFunctions {
       case 'teal':    return Colors.teal;
       case 'indigo':  return Colors.indigo;
       case 'yellow':  return Colors.yellow;
+      case 'navy':    return const Color(0xFF000080);
       default:        return null;
     }
   }

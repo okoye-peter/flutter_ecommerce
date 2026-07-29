@@ -6,63 +6,35 @@ import 'package:ecommerce/core/widgets/products/rounded_container.dart';
 import 'package:ecommerce/core/widgets/texts/product_title_text.dart';
 import 'package:ecommerce/core/widgets/products/choice_chip.dart';
 import 'package:ecommerce/core/widgets/texts/section_heading.dart';
+import 'package:ecommerce/models/product_attribute_model.dart';
 import 'package:ecommerce/models/product_model.dart';
-import 'package:ecommerce/models/product_variation_model.dart';
-import 'package:flutter/foundation.dart';
+import 'package:ecommerce/viewmodels/products/details/variation_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TProductAttributes extends StatefulWidget {
+class TProductAttributes extends ConsumerWidget {
   const TProductAttributes({super.key, required this.product});
 
   final ProductModel product;
 
   @override
-  State<TProductAttributes> createState() => _TProductAttributesState();
-}
-
-class _TProductAttributesState extends State<TProductAttributes> {
-  late Map<String, String> _selected;
-
-  @override
-  void initState() {
-    super.initState();
-    _selected = _initialSelection();
-  }
-
-  Map<String, String> _initialSelection() {
-    final variations = widget.product.productVariations ?? [];
-    if (variations.isNotEmpty) return Map.of(variations.first.attributeValues);
-
-    final selection = <String, String>{};
-    for (final attribute in widget.product.productAttributes ?? []) {
-      if (attribute.name != null && (attribute.values?.isNotEmpty ?? false)) {
-        selection[attribute.name!] = attribute.values!.first;
-      }
-    }
-    return selection;
-  }
-
-  ProductVariationModel? get _selectedVariation {
-    for (final variation in widget.product.productVariations ?? const []) {
-      if (mapEquals(variation.attributeValues, _selected)) return variation;
-    }
-    return null;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final attributes = widget.product.productAttributes ?? [];
+  Widget build(BuildContext context, WidgetRef ref) {
+    final attributes = product.productAttributes ?? [];
     if (attributes.isEmpty) return const SizedBox.shrink();
 
+    final controller = ref.read(variationControllerProvider.notifier);
+    final variationState = ref.watch(variationControllerProvider);
+    final selected = variationState.selectedAttributes;
+    final variation = variationState.resolvedVariation;
+
     final dark = THelperFunctions.isDarkMode(context);
-    final variation = _selectedVariation;
-    final price = variation?.price ?? widget.product.price;
-    final salePrice = variation?.salePrice ?? widget.product.salePrice;
+    final price = variation?.price ?? product.price;
+    final salePrice = variation?.salePrice ?? product.salePrice;
     final hasSale = salePrice > 0 && salePrice < price;
-    final stock = variation?.stock ?? widget.product.stock;
+    final stock = variation?.stock ?? product.stock;
     final description = (variation?.description?.isNotEmpty ?? false)
         ? variation!.description!
-        : (widget.product.description ?? '');
+        : (product.description ?? '');
 
     return Column(
       children: [
@@ -70,15 +42,14 @@ class _TProductAttributesState extends State<TProductAttributes> {
           padding: EdgeInsets.all(TSizes.md),
           backgroundColor: dark ? TColors.darkerGrey : TColors.grey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Title, Price, and Stock Status
               Row(
                 children: [
-                  const Expanded(
-                    child: TSectionHeading(
-                      title: 'Variation',
-                      showActionButton: false,
-                    ),
+                  const TSectionHeading(
+                    title: 'Variation',
+                    showActionButton: false,
                   ),
                   const SizedBox(width: TSizes.spaceBtwItem),
 
@@ -141,33 +112,47 @@ class _TProductAttributesState extends State<TProductAttributes> {
 
         for (final attribute in attributes)
           if (attribute.name != null && (attribute.values?.isNotEmpty ?? false))
-            Padding(
-              padding: const EdgeInsets.only(top: TSizes.spaceBtwItem),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TSectionHeading(
-                    title: attribute.name!,
-                    showActionButton: false,
-                  ),
-                  const SizedBox(height: TSizes.spaceBtwItem / 2),
-                  Wrap(
-                    spacing: 8,
-                    children: [
-                      for (final value in attribute.values!)
-                        TChoiceChip(
-                          text: value,
-                          selected: _selected[attribute.name!] == value,
-                          onSelected: (_) => setState(() {
-                            _selected[attribute.name!] = value;
-                          }),
-                        ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            _buildAttributeSection(controller, selected, attribute),
       ],
+    );
+  }
+
+  Widget _buildAttributeSection(
+    VariationController controller,
+    Map<String, String> selected,
+    ProductAttributeModel attribute,
+  ) {
+    final availableValues = controller.getAttributesAvailabilityInVariation(
+      product.productVariations ?? [],
+      attribute.name!,
+    );
+
+    return Padding(
+      padding: const EdgeInsets.only(top: TSizes.spaceBtwItem),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TSectionHeading(title: attribute.name!, showActionButton: false),
+          const SizedBox(height: TSizes.spaceBtwItem / 2),
+          Wrap(
+            spacing: 8,
+            children: [
+              for (final value in attribute.values!)
+                TChoiceChip(
+                  text: value,
+                  selected: selected[attribute.name!] == value,
+                  onSelected: availableValues.contains(value)
+                      ? (_) => controller.onSelectAttribute(
+                          product,
+                          attribute.name!,
+                          value,
+                        )
+                      : null,
+                ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

@@ -8,18 +8,23 @@ import 'package:ecommerce/core/widgets/products/rounded_container.dart';
 import 'package:ecommerce/core/widgets/texts/brand_title_with_verified_icon.dart';
 import 'package:ecommerce/core/widgets/texts/product_title_text.dart';
 import 'package:ecommerce/models/product_model.dart';
+import 'package:ecommerce/viewmodels/products/details/variation_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TProductMetaData extends StatelessWidget {
+class TProductMetaData extends ConsumerWidget {
   const TProductMetaData({super.key, required this.product});
 
   final ProductModel product;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final variation = ref.watch(variationControllerProvider).resolvedVariation;
+    final price = variation?.price ?? product.price;
+    final salePrice = variation?.salePrice ?? product.salePrice;
     final salePercentage = TPricingHelper.calculateSalePercentage(
-      product.price,
-      product.salePrice,
+      price,
+      salePrice,
     );
     final hasSale = salePercentage != null;
 
@@ -49,7 +54,7 @@ class TProductMetaData extends StatelessWidget {
 
               // Price
               Text(
-                '\$${product.price}',
+                '\$$price',
                 style: Theme.of(context).textTheme.titleSmall!.apply(
                   decoration: TextDecoration.lineThrough,
                 ),
@@ -58,7 +63,7 @@ class TProductMetaData extends StatelessWidget {
             ],
 
             TProductPriceText(
-              price: TPricingHelper.getProductPrice(product),
+              price: TPricingHelper.getProductPrice(product, variation: variation),
               isLarge: true,
             ),
           ],
@@ -76,7 +81,7 @@ class TProductMetaData extends StatelessWidget {
               const TProductTitleText(title: 'Status'),
               const SizedBox(width: TSizes.spaceBtwItem),
               Text(
-                product.stock > 0 ? 'In Stock' : 'Out of Stock',
+                TPricingHelper.getProductStockStatus(product.stock),
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ],
@@ -88,13 +93,13 @@ class TProductMetaData extends StatelessWidget {
           Row(
             children: [
               TCircularImage(
-                image: product.brand!.image,
-                isNetworkImage: true,
+                image: product.brand?.image ?? '',
+                isNetworkImage: product.brand != null,
                 height: 32,
                 width: 32,
               ),
               TBrandTitleWithVerifiedIcon(
-                title: product.brand!.name,
+                title: product.brand?.name ?? '',
                 brandTextSizes: TextSizes.medium,
               ),
             ],
