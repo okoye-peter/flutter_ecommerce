@@ -10,14 +10,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class THomeAppBar extends ConsumerWidget {
-  const THomeAppBar({
-    super.key,
-  });
+  const THomeAppBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(userControllerProvider);
-    
+
     return TAppBar(
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,17 +36,25 @@ class THomeAppBar extends ConsumerWidget {
               ),
             ),
             loading: () => const TShimmerEffect(width: 150, height: 20),
-            error: (_, _) => Text(
-              '',
-              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                color: TColors.white,
-                fontWeight: FontWeight.w700,
+            error: (_, _) => GestureDetector(
+              onTap: () => ref.invalidate(userControllerProvider),
+              child: Text(
+                'Tap to retry',
+                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                  color: TColors.white,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ),
         ],
       ),
-      actions: [TCartCounterIcon(onPressed: () => context.push(AppRoutes.carts), iconColor: TColors.white,)],
+      actions: [
+        TCartCounterIcon(
+          onPressed: () => context.push(AppRoutes.carts),
+          iconColor: TColors.white,
+        ),
+      ],
     );
   }
 }

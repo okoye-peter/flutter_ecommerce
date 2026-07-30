@@ -1,5 +1,6 @@
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/router/app_router.dart';
+import 'package:ecommerce/core/widgets/loaders/error_retry_widget.dart';
 import 'package:ecommerce/core/widgets/loaders/shimmer_effect.dart';
 import 'package:ecommerce/viewmodels/categories/category_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -33,17 +34,33 @@ class THomeCategories extends ConsumerWidget {
           ),
         ),
       ),
-      error: (error, stackTrace) => Text(
-        error.toString(),
-        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-          color: TColors.white,
-          fontWeight: FontWeight.w700,
+      error: (error, stackTrace) => SizedBox(
+        height: 80,
+        child: TErrorRetryWidget(
+          message: error.toString(),
+          textColor: TColors.white,
+          onRetry: () => ref.invalidate(categoriesProvider),
         ),
       ),
       data: (_) {
         final featured = ref
             .read(categoriesProvider.notifier)
             .getFeatureCategories();
+
+        if (featured.isEmpty) {
+          return SizedBox(
+            height: 80,
+            child: Center(
+              child: Text(
+                'No categories found.',
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.apply(color: TColors.white),
+              ),
+            ),
+          );
+        }
+
         return SizedBox(
           height: 80,
           child: ListView.builder(

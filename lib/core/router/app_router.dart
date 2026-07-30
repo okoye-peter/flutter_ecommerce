@@ -169,7 +169,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.products,
-        builder: (context, state) => const AllProductsScreen(),
+        builder: (context, state) => const AllProductsScreen(title: 'All Products'),
       ),
       GoRoute(
         path: AppRoutes.search,

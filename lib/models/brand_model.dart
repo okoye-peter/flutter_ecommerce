@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class BrandModel {
   String id;
   String name;
@@ -73,6 +75,25 @@ class BrandModel {
       productsCount: data['ProductCount'],
       isFeatured: data['IsFeatured'],
     );
+  }
+
+  // Map Json oriented document snapshot from Firebase to UserModel
+  factory BrandModel.fromSnapshot(
+    DocumentSnapshot<Map<String, dynamic>> document,
+  ) {
+    if (document.data() != null) {
+      final data = document.data()!;
+
+      return BrandModel(
+        id: document.id,
+        name: data['Name'] ?? '',
+        image: data['Image'] ?? '',
+        productsCount: data['ProductCount'],
+        isFeatured: data['IsFeatured'],
+      );
+    } else {
+      return BrandModel.empty();
+    }
   }
 
   @override

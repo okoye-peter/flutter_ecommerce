@@ -1,5 +1,6 @@
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/widgets/grids/grid_layout.dart';
+import 'package:ecommerce/core/widgets/loaders/error_retry_widget.dart';
 import 'package:ecommerce/core/widgets/products/product_card_vertical.dart';
 import 'package:ecommerce/core/widgets/texts/section_heading.dart';
 import 'package:ecommerce/models/brand_model.dart';
@@ -45,7 +46,10 @@ class TCategoryTab extends ConsumerWidget {
 
           featuredProducts.when(
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stackTrace) => Text(error.toString()),
+            error: (error, stackTrace) => TErrorRetryWidget(
+              message: error.toString(),
+              onRetry: () => ref.invalidate(featuredProductsProvider),
+            ),
             data: (products) {
               if (products.isEmpty) {
                 return const Center(child: Text('No Data!'));

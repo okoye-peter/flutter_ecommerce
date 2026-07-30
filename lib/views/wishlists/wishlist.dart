@@ -2,6 +2,7 @@ import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/widgets/appbar/appbar.dart';
 import 'package:ecommerce/core/widgets/grids/grid_layout.dart';
 import 'package:ecommerce/core/widgets/icons/circular_icon.dart';
+import 'package:ecommerce/core/widgets/loaders/error_retry_widget.dart';
 import 'package:ecommerce/core/widgets/products/product_card_vertical.dart';
 import 'package:ecommerce/viewmodels/products/featured_products_controller.dart';
 import 'package:ecommerce/views/navigation/navigation_menu.dart';
@@ -35,7 +36,10 @@ class FavoriteScreen extends ConsumerWidget {
           children: [
             featuredProducts.when(
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, stackTrace) => Text(error.toString()),
+              error: (error, stackTrace) => TErrorRetryWidget(
+                message: error.toString(),
+                onRetry: () => ref.invalidate(featuredProductsProvider),
+              ),
               data: (products) {
                 if (products.isEmpty) {
                   return const Center(child: Text('No Data!'));

@@ -2,6 +2,7 @@ import 'package:ecommerce/core/constants/colors.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/router/app_router.dart';
 import 'package:ecommerce/core/widgets/curved_edges/primary_header_container.dart';
+import 'package:ecommerce/core/widgets/loaders/error_retry_widget.dart';
 import 'package:ecommerce/core/widgets/products/product_card_vertical.dart';
 import 'package:ecommerce/core/widgets/products/product_card_vertical_shimmer.dart';
 import 'package:ecommerce/core/widgets/products/product_grid_view.dart';
@@ -83,14 +84,13 @@ class HomeScreen extends ConsumerWidget {
 
                   featuredProducts.when(
                     loading: () => TProductGridView(
-                      itemBuilder: (_, _) => const TProductCardVerticalShimmer(),
+                      itemBuilder: (_, _) =>
+                          const TProductCardVerticalShimmer(),
                     ),
-                    error: (error, stackTrace) {
-                      return Padding(
-                        padding: const EdgeInsets.all(TSizes.spaceBtwItem),
-                        child: Text(error.toString()),
-                      );
-                    },
+                    error: (error, stackTrace) => TErrorRetryWidget(
+                      message: error.toString(),
+                      onRetry: () => ref.invalidate(featuredProductsProvider),
+                    ),
                     data: (featuredProducts) {
                       if (featuredProducts.isEmpty) {
                         return Center(child: Text('No Data!'));

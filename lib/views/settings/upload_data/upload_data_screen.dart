@@ -6,6 +6,7 @@ import 'package:ecommerce/core/widgets/loaders/full_screen_loader.dart';
 import 'package:ecommerce/core/widgets/loaders/snacks_loader.dart';
 import 'package:ecommerce/core/widgets/texts/section_heading.dart';
 import 'package:ecommerce/scripts/banner_seeder.dart';
+import 'package:ecommerce/scripts/brand_seeder.dart';
 import 'package:ecommerce/scripts/category_seeder.dart';
 import 'package:ecommerce/scripts/product_seeder.dart';
 import 'package:ecommerce/views/settings/upload_data/widgets/upload_data_tile.dart';
@@ -62,7 +63,10 @@ class UploadDataScreen extends ConsumerWidget {
             TUploadDataTile(
               icon: Iconsax.shop,
               title: 'Upload Brands',
-              onTap: _comingSoon,
+              onTap: () => _run(
+                'Uploading brands...',
+                () => seedBrands(ref.read(cloudinaryRepositoryProvider)),
+              ),
             ),
             TUploadDataTile(
               icon: Iconsax.shopping_cart,

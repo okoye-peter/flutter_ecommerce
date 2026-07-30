@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/widgets/grids/grid_layout.dart';
+import 'package:ecommerce/core/widgets/loaders/error_retry_widget.dart';
 import 'package:ecommerce/core/widgets/products/product_card_vertical.dart';
 import 'package:ecommerce/viewmodels/products/search_controller.dart';
 import 'package:flutter/material.dart';
@@ -65,13 +66,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     final results = ref.watch(searchControllerProvider(_query));
 
     return results.when(
-      loading: () => const Center(
-        heightFactor: 4,
-        child: CircularProgressIndicator(),
-      ),
+      loading: () =>
+          const Center(heightFactor: 4, child: CircularProgressIndicator()),
       error: (error, _) => Center(
         heightFactor: 4,
-        child: Text(error.toString()),
+        child: TErrorRetryWidget(
+          message: error.toString(),
+          onRetry: () => ref.invalidate(searchControllerProvider(_query)),
+        ),
       ),
       data: (products) {
         if (products.isEmpty) {

@@ -74,11 +74,11 @@ class ProductRepository {
           .limit((limit ?? 4) * 3)
           .get();
 
-          // final snapshot = await _db
-          // .collection('Products')
-          // .where('IsFeatured', isEqualTo: true)
-          // .limit(limit!)
-          // .get();
+      // final snapshot = await _db
+      // .collection('Products')
+      // .where('IsFeatured', isEqualTo: true)
+      // .limit(limit!)
+      // .get();
 
       final items = snapshot.docs
           .map((e) => ProductModel.fromQuerySnapshot(e))
@@ -126,6 +126,25 @@ class ProductRepository {
       throw TPlatformException(e.code);
     } catch (e, s) {
       debugPrint('ProductRepository.searchProducts failed: $e\n$s');
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+  Future<List<ProductModel>> fetchProductsByQuery(Query query) async {
+    try {
+      final querySnapshot = await query.get();
+      final List<ProductModel> productList = querySnapshot.docs
+          .map((doc) => ProductModel.fromQuerySnapshot(doc))
+          .toList();
+      return productList;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code);
+    } on FormatException catch (_) {
+      throw const TFormatException();
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code);
+    } catch (e, s) {
+      debugPrint('ProductRepository.fetchProductsByQuery failed: $e\n$s');
       throw 'Something went wrong. Please try again';
     }
   }

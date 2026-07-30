@@ -1,6 +1,7 @@
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/helpers/helper_functions.dart';
 import 'package:ecommerce/core/router/app_router.dart';
+import 'package:ecommerce/core/widgets/loaders/error_retry_widget.dart';
 import 'package:ecommerce/core/widgets/texts/section_heading.dart';
 import 'package:ecommerce/viewmodels/products/product_details_controller.dart';
 import 'package:ecommerce/views/products/widgets/bottom_add_to_cart_widget.dart';
@@ -30,7 +31,11 @@ class ProductDetailsScreen extends ConsumerWidget {
         bottom: false,
         child: productAsync.when(
           loading: () => const TProductDetailsShimmer(),
-          error: (error, stackTrace) => Center(child: Text(error.toString())),
+          error: (error, stackTrace) => TErrorRetryWidget(
+            message: error.toString(),
+            onRetry: () =>
+                ref.invalidate(productDetailsControllerProvider(productId)),
+          ),
           data: (product) => SingleChildScrollView(
             child: Column(
               children: [

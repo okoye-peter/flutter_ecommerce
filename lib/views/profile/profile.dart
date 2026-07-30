@@ -1,5 +1,6 @@
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/widgets/appbar/appbar.dart';
+import 'package:ecommerce/core/widgets/loaders/error_retry_widget.dart';
 import 'package:ecommerce/viewmodels/auth/user_controller.dart';
 import 'package:ecommerce/views/profile/widgets/profile_details.dart';
 import 'package:ecommerce/views/profile/widgets/profile_details_shimmer.dart';
@@ -21,8 +22,9 @@ class ProfileScreen extends ConsumerWidget {
           child: userState.when(
             data: (user) => TProfileDetails(user: user),
             loading: () => const TProfileDetailsShimmer(),
-            error: (_, _) => const Center(
-              child: Text('Something went wrong loading your profile.'),
+            error: (_, _) => TErrorRetryWidget(
+              message: 'Something went wrong loading your profile.',
+              onRetry: () => ref.invalidate(userControllerProvider),
             ),
           ),
         ),

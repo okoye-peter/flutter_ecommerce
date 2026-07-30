@@ -4,6 +4,7 @@ import 'package:ecommerce/core/providers/providers.dart';
 import 'package:ecommerce/core/router/app_router.dart';
 import 'package:ecommerce/core/widgets/appbar/appbar.dart';
 import 'package:ecommerce/core/widgets/curved_edges/primary_header_container.dart';
+import 'package:ecommerce/core/widgets/loaders/error_retry_widget.dart';
 import 'package:ecommerce/core/widgets/loaders/full_screen_loader.dart';
 import 'package:ecommerce/core/widgets/loaders/shimmer_effect.dart';
 import 'package:ecommerce/core/widgets/texts/section_heading.dart';
@@ -59,8 +60,10 @@ class SettingsScreen extends ConsumerWidget {
                         radius: TSizes.borderRadiusSm,
                       ),
                     ),
-                    error: (_, _) => const Center(
-                      child: Text('Something went wrong loading your profile.'),
+                    error: (_, _) => TErrorRetryWidget(
+                      message: 'Something went wrong loading your profile.',
+                      textColor: TColors.white,
+                      onRetry: () => ref.invalidate(userControllerProvider),
                     ),
                   ),
 
