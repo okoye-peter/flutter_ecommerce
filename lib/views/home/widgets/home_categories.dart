@@ -72,7 +72,7 @@ class THomeCategories extends ConsumerWidget {
                 image: cat.image,
                 title: cat.name,
                 textColor: TColors.white,
-                onTap: () => context.push(AppRoutes.subCategories),
+                onTap: () => context.push(AppRoutes.subCategoryDetails(cat.id)),
               );
             },
           ),

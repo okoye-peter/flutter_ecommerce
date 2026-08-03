@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ecommerce/core/providers/providers.dart';
+import 'package:ecommerce/models/address_model.dart';
 import 'package:ecommerce/views/auth/forgot_password.dart';
 import 'package:ecommerce/views/auth/login.dart';
 import 'package:ecommerce/views/auth/onboarding.dart';
@@ -55,6 +56,8 @@ abstract final class AppRoutes {
   static const checkout = '/checkout';
   static const orders = '/orders';
   static const subCategories = '/sub_categories';
+  static const subCategoryDetailsPath = '/sub_categories/:categoryId';
+  static String subCategoryDetails(String id) => '/sub_categories/$id';
 }
 
 /// Bridges a [Stream] to a [Listenable] so [GoRouter] can re-evaluate its
@@ -169,7 +172,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.products,
-        builder: (context, state) => const AllProductsScreen(title: 'All Products'),
+        builder: (context, state) =>
+            const AllProductsScreen(title: 'All Products'),
       ),
       GoRoute(
         path: AppRoutes.search,
@@ -177,15 +181,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.productDetailsPath,
-        builder: (context, state) => ProductDetailsScreen(
-          productId: state.pathParameters['productId']!,
-        ),
+        builder: (context, state) =>
+            ProductDetailsScreen(productId: state.pathParameters['productId']!),
       ),
       GoRoute(
         path: AppRoutes.productReviewsPath,
-        builder: (context, state) => ProductReviewsScreen(
-          productId: state.pathParameters['productId']!,
-        ),
+        builder: (context, state) =>
+            ProductReviewsScreen(productId: state.pathParameters['productId']!),
       ),
       GoRoute(
         path: AppRoutes.address,
@@ -193,7 +195,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.addNewAddress,
-        builder: (context, state) => const AddNewAddressScreen(),
+        builder: (context, state) =>
+            AddNewAddressScreen(address: state.extra as AddressModel?),
       ),
       GoRoute(
         path: AppRoutes.uploadData,
@@ -216,14 +219,18 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const SubCategoriesScreen(),
       ),
       GoRoute(
+        path: AppRoutes.subCategoryDetailsPath,
+        builder: (context, state) =>
+            SubCategoriesScreen(categoryId: state.pathParameters['categoryId']),
+      ),
+      GoRoute(
         path: AppRoutes.brands,
         builder: (context, state) => const AllBrandsScreen(),
       ),
       GoRoute(
         path: AppRoutes.brandProductsPath,
-        builder: (context, state) => BrandProductsScreen(
-          brandId: state.pathParameters['brandId']!,
-        ),
+        builder: (context, state) =>
+            BrandProductsScreen(brandId: state.pathParameters['brandId']!),
       ),
     ],
   );

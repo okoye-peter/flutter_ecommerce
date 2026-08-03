@@ -1,10 +1,13 @@
+import 'package:ecommerce/core/constants/image_strings.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/widgets/appbar/appbar.dart';
 import 'package:ecommerce/core/widgets/grids/grid_layout.dart';
 import 'package:ecommerce/core/widgets/icons/circular_icon.dart';
+import 'package:ecommerce/core/widgets/loaders/animation_loader.dart';
 import 'package:ecommerce/core/widgets/loaders/error_retry_widget.dart';
 import 'package:ecommerce/core/widgets/products/product_card_vertical.dart';
-import 'package:ecommerce/viewmodels/products/featured_products_controller.dart';
+import 'package:ecommerce/core/widgets/products/product_card_vertical_shimmer.dart';
+import 'package:ecommerce/viewmodels/products/favorites/favorite_products_controller.dart';
 import 'package:ecommerce/views/navigation/navigation_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,7 +17,7 @@ class FavoriteScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final featuredProducts = ref.watch(featuredProductsProvider);
+    final favoriteProducts = ref.watch(favoriteProductsControllerProvider);
 
     return Scaffold(
       appBar: TAppBar(
@@ -34,15 +37,30 @@ class FavoriteScreen extends ConsumerWidget {
         padding: const EdgeInsets.all(TSizes.defaultSpace),
         child: Column(
           children: [
-            featuredProducts.when(
-              loading: () => const Center(child: CircularProgressIndicator()),
+            favoriteProducts.when(
+              loading: () => GridView.builder(
+                shrinkWrap: true,
+                itemCount: 6,
+                padding: EdgeInsets.zero,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisExtent: 304,
+                  mainAxisSpacing: TSizes.gridViewSpacing,
+                  crossAxisSpacing: TSizes.gridViewSpacing,
+                ),
+                itemBuilder: (_, __) => TProductCardVerticalShimmer(),
+              ),
               error: (error, stackTrace) => TErrorRetryWidget(
                 message: error.toString(),
-                onRetry: () => ref.invalidate(featuredProductsProvider),
+                onRetry: () => ref.invalidate(favoriteProductsControllerProvider),
               ),
               data: (products) {
                 if (products.isEmpty) {
-                  return const Center(child: Text('No Data!'));
+                  return const TAnimationLoaderWidget(
+                    text: 'Nothing in your wishlist yet',
+                    animation: TImages.emptyWishlistAnimation,
+                  );
                 }
                 return TGridLayout(
                   itemCount: products.length,

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'brand_products_provider.dart';
+part of 'category_products_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,10 +9,10 @@ part of 'brand_products_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(brandProducts)
-final brandProductsProvider = BrandProductsFamily._();
+@ProviderFor(categoryProducts)
+final categoryProductsProvider = CategoryProductsFamily._();
 
-final class BrandProductsProvider
+final class CategoryProductsProvider
     extends
         $FunctionalProvider<
           AsyncValue<List<ProductModel>>,
@@ -22,23 +22,23 @@ final class BrandProductsProvider
     with
         $FutureModifier<List<ProductModel>>,
         $FutureProvider<List<ProductModel>> {
-  BrandProductsProvider._({
-    required BrandProductsFamily super.from,
-    required (String, {int? limit}) super.argument,
+  CategoryProductsProvider._({
+    required CategoryProductsFamily super.from,
+    required (String, {int limit}) super.argument,
   }) : super(
          retry: null,
-         name: r'brandProductsProvider',
+         name: r'categoryProductsProvider',
          isAutoDispose: true,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
 
   @override
-  String debugGetCreateSourceHash() => _$brandProductsHash();
+  String debugGetCreateSourceHash() => _$categoryProductsHash();
 
   @override
   String toString() {
-    return r'brandProductsProvider'
+    return r'categoryProductsProvider'
         ''
         '$argument';
   }
@@ -51,13 +51,13 @@ final class BrandProductsProvider
 
   @override
   FutureOr<List<ProductModel>> create(Ref ref) {
-    final argument = this.argument as (String, {int? limit});
-    return brandProducts(ref, argument.$1, limit: argument.limit);
+    final argument = this.argument as (String, {int limit});
+    return categoryProducts(ref, argument.$1, limit: argument.limit);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is BrandProductsProvider && other.argument == argument;
+    return other is CategoryProductsProvider && other.argument == argument;
   }
 
   @override
@@ -66,26 +66,29 @@ final class BrandProductsProvider
   }
 }
 
-String _$brandProductsHash() => r'081bf0cc8dbbf6460303320784a70acb0fddd111';
+String _$categoryProductsHash() => r'e27f1fd3f16a9f256d1ca36005e9306e89591a62';
 
-final class BrandProductsFamily extends $Family
+final class CategoryProductsFamily extends $Family
     with
         $FunctionalFamilyOverride<
           FutureOr<List<ProductModel>>,
-          (String, {int? limit})
+          (String, {int limit})
         > {
-  BrandProductsFamily._()
+  CategoryProductsFamily._()
     : super(
         retry: null,
-        name: r'brandProductsProvider',
+        name: r'categoryProductsProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
         isAutoDispose: true,
       );
 
-  BrandProductsProvider call(String brandId, {int? limit}) =>
-      BrandProductsProvider._(argument: (brandId, limit: limit), from: this);
+  CategoryProductsProvider call(String categoryId, {int limit = 4}) =>
+      CategoryProductsProvider._(
+        argument: (categoryId, limit: limit),
+        from: this,
+      );
 
   @override
-  String toString() => r'brandProductsProvider';
+  String toString() => r'categoryProductsProvider';
 }

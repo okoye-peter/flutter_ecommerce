@@ -6,7 +6,7 @@ import 'package:ecommerce/core/helpers/pricing_helper.dart';
 import 'package:ecommerce/core/router/app_router.dart';
 import 'package:ecommerce/core/styles/shadow.dart';
 import 'package:ecommerce/core/widgets/images/rounded_image.dart';
-import 'package:ecommerce/core/widgets/icons/circular_icon.dart';
+import 'package:ecommerce/core/widgets/products/favorites/favorite_icon.dart';
 import 'package:ecommerce/core/widgets/products/product_price_and_add_to_cart.dart';
 import 'package:ecommerce/core/widgets/products/rounded_container.dart';
 import 'package:ecommerce/core/widgets/texts/brand_title_text.dart';
@@ -86,10 +86,7 @@ class TProductCardVertical extends ConsumerWidget {
                   Positioned(
                     top: 0,
                     right: 0,
-                    child: const TCircularIcon(
-                      icon: Icons.favorite,
-                      color: Colors.red,
-                    ),
+                    child: TFavoriteIcon(productId: product.id),
                   ),
                 ],
               ),

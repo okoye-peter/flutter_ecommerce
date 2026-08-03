@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorage {
@@ -8,6 +9,14 @@ class LocalStorage {
   Future<LocalStorage> init() async {
     _prefs = await SharedPreferences.getInstance();
     return this;
+  }
+
+  /// Prefixes [key] with the signed-in user's ID, so per-user data (cart,
+  /// wishlist, favorites) doesn't leak across accounts on a shared device.
+  /// Falls back to a fixed 'guest' bucket while signed out.
+  static String scopedKey(String key) {
+    final uid = FirebaseAuth.instance.currentUser?.uid ?? 'guest';
+    return '${uid}_$key';
   }
 
   // ── Primitives ──────────────────────────────────────────────────────────────
@@ -59,7 +68,7 @@ class LocalStorage {
 
   static const _cartKey = 'cart_ids';
 
-  List<String> getCartIds() => _prefs.getStringList(_cartKey) ?? [];
+  List<String> getCartIds() => _prefs.getStringList(scopedKey(_cartKey)) ?? [];
 
   int get cartCount => getCartIds().length;
 
@@ -68,22 +77,22 @@ class LocalStorage {
   Future<void> addToCart(String productId) async {
     final ids = getCartIds();
     if (!ids.contains(productId)) {
-      await _prefs.setStringList(_cartKey, [...ids, productId]);
+      await _prefs.setStringList(scopedKey(_cartKey), [...ids, productId]);
     }
   }
 
   Future<void> removeFromCart(String productId) async {
     final ids = getCartIds()..remove(productId);
-    await _prefs.setStringList(_cartKey, ids);
+    await _prefs.setStringList(scopedKey(_cartKey), ids);
   }
 
-  Future<void> clearCart() => _prefs.remove(_cartKey);
+  Future<void> clearCart() => _prefs.remove(scopedKey(_cartKey));
 
   // ── Wishlist ─────────────────────────────────────────────────────────────────
 
   static const _wishlistKey = 'wishlist_ids';
 
-  List<String> getWishlistIds() => _prefs.getStringList(_wishlistKey) ?? [];
+  List<String> getWishlistIds() => _prefs.getStringList(scopedKey(_wishlistKey)) ?? [];
 
   int get wishlistCount => getWishlistIds().length;
 
@@ -92,16 +101,16 @@ class LocalStorage {
   Future<void> addToWishlist(String productId) async {
     final ids = getWishlistIds();
     if (!ids.contains(productId)) {
-      await _prefs.setStringList(_wishlistKey, [...ids, productId]);
+      await _prefs.setStringList(scopedKey(_wishlistKey), [...ids, productId]);
     }
   }
 
   Future<void> removeFromWishlist(String productId) async {
     final ids = getWishlistIds()..remove(productId);
-    await _prefs.setStringList(_wishlistKey, ids);
+    await _prefs.setStringList(scopedKey(_wishlistKey), ids);
   }
 
-  Future<void> clearWishlist() => _prefs.remove(_wishlistKey);
+  Future<void> clearWishlist() => _prefs.remove(scopedKey(_wishlistKey));
 
   // ── Onboarding ───────────────────────────────────────────────────────────────
 

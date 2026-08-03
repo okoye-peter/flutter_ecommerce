@@ -1,13 +1,10 @@
 import 'package:ecommerce/core/constants/colors.dart';
-import 'package:ecommerce/core/constants/image_strings.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/helpers/helper_functions.dart';
 import 'package:ecommerce/core/router/app_router.dart';
 import 'package:ecommerce/core/widgets/appbar/appbar.dart';
 import 'package:ecommerce/core/widgets/appbar/tab_bar.dart';
 import 'package:ecommerce/core/widgets/cart/cart_counter_icon.dart';
-import 'package:ecommerce/models/brand_model.dart';
-import 'package:ecommerce/viewmodels/brands/brand_controller.dart';
 import 'package:ecommerce/viewmodels/categories/category_viewmodel.dart';
 import 'package:ecommerce/views/store/widgets/category_tab.dart';
 import 'package:ecommerce/views/store/widgets/store_header.dart';
@@ -25,10 +22,6 @@ class StoreScreen extends ConsumerWidget {
     final featuredCategories = ref
         .read(categoriesProvider.notifier)
         .getFeatureCategories();
-
-    ref.watch(brandControllerProvider);
-    final featuredBrands = ref.read(brandControllerProvider.notifier).getFeaturedBrands();
-    final firstFeaturedBrand = featuredBrands.isNotEmpty ? featuredBrands.first : BrandModel.empty();
 
     return DefaultTabController(
       length: featuredCategories.length,
@@ -66,14 +59,7 @@ class StoreScreen extends ConsumerWidget {
           ],
           body: TabBarView(
             children: featuredCategories
-                .map(
-                  (cat) => TCategoryTab(
-                    brand: firstFeaturedBrand,
-                    imgUrl1: TImages.productImage14,
-                    imgUrl2: TImages.productImage15,
-                    imgUrl3: TImages.productImage16,
-                  ),
-                )
+                .map((cat) => TCategoryTab(category: cat))
                 .toList(),
           ),
         ),

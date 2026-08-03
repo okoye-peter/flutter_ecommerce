@@ -80,7 +80,7 @@ class _TProductImagesSliderState extends ConsumerState<TProductImagesSlider> {
                     onTap: () =>  imageController.showEnlargeImage(context, selectedImage.selectedProductImage),
                     child: CachedNetworkImage(
                       imageUrl: selectedImage.selectedProductImage,
-                      progressIndicatorBuilder: (_, __, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress, color: TColors.primary,),
+                      progressIndicatorBuilder: (_, _, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress, color: TColors.primary,),
                     ),
                   ),
                 ),

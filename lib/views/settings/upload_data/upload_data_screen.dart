@@ -6,8 +6,10 @@ import 'package:ecommerce/core/widgets/loaders/full_screen_loader.dart';
 import 'package:ecommerce/core/widgets/loaders/snacks_loader.dart';
 import 'package:ecommerce/core/widgets/texts/section_heading.dart';
 import 'package:ecommerce/scripts/banner_seeder.dart';
+import 'package:ecommerce/scripts/brand_category_seeder.dart';
 import 'package:ecommerce/scripts/brand_seeder.dart';
 import 'package:ecommerce/scripts/category_seeder.dart';
+import 'package:ecommerce/scripts/product_category_seeder.dart';
 import 'package:ecommerce/scripts/product_seeder.dart';
 import 'package:ecommerce/views/settings/upload_data/widgets/upload_data_tile.dart';
 import 'package:flutter/material.dart';
@@ -29,13 +31,6 @@ class UploadDataScreen extends ConsumerWidget {
       await TFullScreenLoader.stopLoading();
       TSnacksLoader.errorSnackBar(title: 'Upload failed', message: e.toString());
     }
-  }
-
-  void _comingSoon() {
-    TSnacksLoader.warningSnackBar(
-      title: 'Coming soon',
-      message: 'This upload is not available yet.',
-    );
   }
 
   @override
@@ -96,12 +91,18 @@ class UploadDataScreen extends ConsumerWidget {
             TUploadDataTile(
               icon: Iconsax.repeat,
               title: 'Upload Brands & Categories Relation Data',
-              onTap: _comingSoon,
+              onTap: () => _run(
+                'Uploading brand/category relations...',
+                seedBrandCategories,
+              ),
             ),
             TUploadDataTile(
               icon: Iconsax.repeat,
               title: 'Upload Product Categories Relational Data',
-              onTap: _comingSoon,
+              onTap: () => _run(
+                'Uploading product/category relations...',
+                seedProductCategories,
+              ),
             ),
           ],
         ),

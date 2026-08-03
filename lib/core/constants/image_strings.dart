@@ -93,4 +93,6 @@ class TImages {
 
   // -- Lottie Animations
   static const String loadingAnimation = "assets/lottie/loading.json";
+  static const String emptyWishlistAnimation =
+      "assets/lottie/empty_wishlist.json";
 }

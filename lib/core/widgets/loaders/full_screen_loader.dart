@@ -10,9 +10,12 @@ import 'package:flutter/material.dart';
 class TFullScreenLoader {
   const TFullScreenLoader._();
 
+  static bool _isShowing = false;
+
   static void openLoadingDialog(String text, {String? animation}) {
     final context = rootNavigatorKey.currentContext!;
 
+    _isShowing = true;
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -27,7 +30,11 @@ class TFullScreenLoader {
           child: TAnimationLoaderWidget(text: text, animation: animation),
         ),
       ),
-    );
+      // Fires no matter how the dialog route ends up closed — including a
+      // go_router redirect (e.g. logout) tearing down the stack out from
+      // under it — so this stays in sync with reality even when nothing
+      // here called pop() itself.
+    ).then((_) => _isShowing = false);
   }
 
   /// Closes the loading dialog. The returned future completes once the pop
@@ -36,12 +43,18 @@ class TFullScreenLoader {
   static Future<void> stopLoading() {
     final completer = Completer<void>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final navigator = Navigator.of(
-        rootNavigatorKey.currentContext!,
-        rootNavigator: true,
-      );
-      if (navigator.canPop()) {
-        navigator.pop();
+      // A redirect (e.g. auth-state-driven logout) may have already closed
+      // the dialog by replacing the whole route stack. Popping again here
+      // would then pop whatever page is left instead, which can empty the
+      // stack entirely and crash go_router.
+      if (_isShowing) {
+        final navigator = Navigator.of(
+          rootNavigatorKey.currentContext!,
+          rootNavigator: true,
+        );
+        if (navigator.canPop()) {
+          navigator.pop();
+        }
       }
       completer.complete();
     });

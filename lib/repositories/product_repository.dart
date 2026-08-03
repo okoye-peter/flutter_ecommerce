@@ -3,6 +3,7 @@ import 'package:ecommerce/core/constants/enums.dart';
 import 'package:ecommerce/core/errors/firebase_exception.dart';
 import 'package:ecommerce/core/errors/format_exception.dart';
 import 'package:ecommerce/core/errors/platform_exception.dart';
+import 'package:ecommerce/models/product_category_model.dart';
 import 'package:ecommerce/models/product_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -145,6 +146,80 @@ class ProductRepository {
       throw TPlatformException(e.code);
     } catch (e, s) {
       debugPrint('ProductRepository.fetchProductsByQuery failed: $e\n$s');
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+  Future<List<ProductModel>> getProductsForCategory({
+    required List<String> categoryIds,
+    int limit = -1,
+  }) async {
+    try {
+      final links = limit > 0
+          ? await _db
+                .collection('ProductCategory')
+                .where('categoryId', whereIn: categoryIds)
+                .limit(limit)
+                .get()
+          : await _db
+                .collection('ProductCategory')
+                .where('categoryId', whereIn: categoryIds)
+                .get();
+
+      final productIds = links.docs
+          .map((doc) => ProductCategoryModel.fromSnapshot(doc).productId)
+          .toList();
+      if (productIds.isEmpty) return [];
+
+      final snapshot = await _db
+          .collection('Products')
+          .where(FieldPath.documentId, whereIn: productIds)
+          .get();
+
+      return snapshot.docs
+          .map((doc) => ProductModel.fromQuerySnapshot(doc))
+          .toList();
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code);
+    } on FormatException catch (_) {
+      throw const TFormatException();
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code);
+    } catch (e, s) {
+      debugPrint('ProductRepository.getProductsForCategory failed: $e\n$s');
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+  Future<List<ProductModel>> getSelectedProducts({
+    required List<String> productIds,
+    int limit = -1,
+  }) async {
+    if (productIds.isEmpty) return [];
+
+    try {
+      final snapshot = limit > 0
+          ? await _db
+                .collection('Products')
+                .where(FieldPath.documentId, whereIn: productIds)
+                .limit(limit)
+                .get()
+          : await _db
+                .collection('Products')
+                .where(FieldPath.documentId, whereIn: productIds)
+                .get();
+
+      return snapshot.docs
+          .map((doc) => ProductModel.fromQuerySnapshot(doc))
+          .toList();
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code);
+    } on FormatException catch (_) {
+      throw const TFormatException();
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code);
+    } catch (e, s) {
+      debugPrint('ProductRepository.getProductsForCategory failed: $e\n$s');
       throw 'Something went wrong. Please try again';
     }
   }

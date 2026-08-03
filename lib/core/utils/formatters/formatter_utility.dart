@@ -28,32 +28,18 @@ class TFormatter {
     return phoneNumber;
   }
 
-  static String internaltionalFormatPhoneNumber(String phoneNumber) {
-    // Remove any non-digit characters from the phone number
-    var digitOnly = phoneNumber.replaceAll(RegExp(r'\D'), '');
+  // Numbers are stored as plain digits with no country code (see
+  // validatePhoneNumber's `^\d{10}$`), so a bare 10-digit number is assumed
+  // to be NANP (+1) unless it already carries a longer, country-coded form.
+  static String formatPhoneNumberInternational(
+    String phoneNumber, {
+    String defaultCountryCode = '+1',
+  }) {
+    final digitsOnly = phoneNumber.replaceAll(RegExp(r'\D'), '');
+    if (digitsOnly.isEmpty) return phoneNumber;
 
-    // Extract the country code from thr digitsOnly
-    String countrycode = '+${digitOnly.substring(0, 2)}';
-
-    final formattedNumber = StringBuffer();
-    formattedNumber.write('($countrycode) ');
-
-    int i = 0;
-    while (i < digitOnly.length) {
-      int groupLenght = 2;
-      if (i == 0 && countrycode == '+1') {
-        groupLenght = 3;
-      }
-
-      int end = i + groupLenght;
-      formattedNumber.write(digitOnly.substring(i, end));
-
-      if (end < digitOnly.length) {
-        formattedNumber.write(' ');
-      }
-      i = end;
-    }
-
-    return formattedNumber.toString();
+    return digitsOnly.length > 10
+        ? '+$digitsOnly'
+        : '$defaultCountryCode$digitsOnly';
   }
 }

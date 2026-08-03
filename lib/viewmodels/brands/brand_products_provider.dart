@@ -5,6 +5,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'brand_products_provider.g.dart';
 
 @riverpod
-Future<List<ProductModel>> brandProducts(Ref ref, String brandId) {
-  return BrandRepository().fetchBrandProducts(brandId);
+Future<List<ProductModel>> brandProducts(Ref ref, String brandId, {int? limit}) {
+  return BrandRepository().fetchBrandProducts(brandId, limit: limit ?? -1);
 }

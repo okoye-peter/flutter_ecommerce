@@ -27,6 +27,22 @@ class CategoryViewModel extends AsyncNotifier<List<CategoryModel>> {
         .take(8)
         .toList();
   }
+
+  /// [categoryId] plus the ID of every category whose `parentId` points to
+  /// it. Top-level tabs (e.g. "Automobile") are parent categories, but
+  /// products are tagged with their specific subcategory (e.g. "Cars"), so
+  /// looking up a parent category's products/brands needs its children's
+  /// IDs too, not just its own.
+  List<String> getCategoryAndDescendantIds(String categoryId) {
+    final categories = state.value ?? [];
+    final childIds = categories
+        .where((cat) => cat.parentId == categoryId)
+        .map((cat) => cat.id);
+    return [categoryId, ...childIds];
+  }
 }
 
-final categoriesProvider = AsyncNotifierProvider<CategoryViewModel, List<CategoryModel>>(CategoryViewModel.new);
+final categoriesProvider =
+    AsyncNotifierProvider<CategoryViewModel, List<CategoryModel>>(
+      CategoryViewModel.new,
+    );

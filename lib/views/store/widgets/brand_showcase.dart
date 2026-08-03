@@ -1,11 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce/core/constants/colors.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/helpers/helper_functions.dart';
+import 'package:ecommerce/core/router/app_router.dart';
 import 'package:ecommerce/core/widgets/brands/brand_card.dart';
+import 'package:ecommerce/core/widgets/loaders/shimmer_effect.dart';
 import 'package:ecommerce/core/widgets/products/rounded_container.dart';
 import 'package:ecommerce/core/widgets/texts/section_heading.dart';
 import 'package:ecommerce/models/brand_model.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class TBrandShowCase extends StatelessWidget {
   const TBrandShowCase({
@@ -25,28 +29,31 @@ class TBrandShowCase extends StatelessWidget {
   Widget build(BuildContext context) {
     final dark = THelperFunctions.isDarkMode(context);
 
-    return TRoundedContainer(
-      showBorder: true,
-      borderColor: TColors.darkGrey,
-      padding: const EdgeInsets.all(TSizes.md),
-      margin: const EdgeInsets.only(bottom: TSizes.spaceBtwItem),
-      child: Column(
-        children: [
-          TBrandCard(
-            image: brand.image,
-            title: brand.name,
-            productCount: '${brand.productsCount ?? 0} products',
-            showBorder: false,
-          ),
-          Row(
-            children: [imgUrl1, imgUrl2, imgUrl3]
-                .map((url) => _BrandProductImage(imageUrl: url, dark: dark))
-                .toList(),
-          ),
-
-          // products
-          TSectionHeading(title: 'You might like', onPressed: () {},),
-        ],
+    return InkWell(
+      onTap: () => context.push(AppRoutes.brandProducts(brand.id)),
+      child: TRoundedContainer(
+        showBorder: true,
+        borderColor: TColors.darkGrey,
+        padding: const EdgeInsets.all(TSizes.md),
+        margin: const EdgeInsets.only(bottom: TSizes.spaceBtwItem),
+        child: Column(
+          children: [
+            TBrandCard(
+              image: brand.image,
+              title: brand.name,
+              productCount: '${brand.productsCount ?? 0} products',
+              showBorder: false,
+            ),
+            Row(
+              children: [imgUrl1, imgUrl2, imgUrl3]
+                  .map((url) => _BrandProductImage(imageUrl: url, dark: dark))
+                  .toList(),
+            ),
+      
+            // products
+            TSectionHeading(title: 'You might like', onPressed: () => context.push(AppRoutes.brandProducts(brand.id)),),
+          ],
+        ),
       ),
     );
   }
@@ -60,6 +67,8 @@ class _BrandProductImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isNetworkImage = imageUrl.startsWith('http');
+
     return Expanded(
       child: TRoundedContainer(
         height: 100,
@@ -67,12 +76,25 @@ class _BrandProductImage extends StatelessWidget {
         margin: const EdgeInsets.only(right: TSizes.sm),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(TSizes.md),
-          child: Image(
-            image: AssetImage(imageUrl),
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-          ),
+          child: isNetworkImage
+              ? CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                  placeholder: (context, url) => const TShimmerEffect(
+                    width: double.infinity,
+                    height: 100,
+                  ),
+                  errorWidget: (context, url, error) =>
+                      const Icon(Icons.image_not_supported_outlined),
+                )
+              : Image(
+                  image: AssetImage(imageUrl),
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
         ),
       ),
     );
