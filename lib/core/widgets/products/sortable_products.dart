@@ -95,8 +95,8 @@ class _TSortableProductsState extends ConsumerState<TSortableProducts> {
             itemCount: 6,
             itemBuilder: (_, _) => const TProductCardVerticalShimmer(),
           ),
-          error: (error, stackTrace) => TErrorRetryWidget(
-            message: error.toString(),
+          error: (_, _) => TErrorRetryWidget(
+            message: 'Something went wrong loading products.',
             onRetry:
                 widget.onRetry ??
                 (() => ref.invalidate(featuredProductsProvider)),

@@ -5,6 +5,7 @@ import 'package:ecommerce/core/helpers/helper_functions.dart';
 import 'package:ecommerce/core/helpers/pricing_helper.dart';
 import 'package:ecommerce/core/router/app_router.dart';
 import 'package:ecommerce/core/styles/shadow.dart';
+import 'package:ecommerce/core/widgets/cart/add_to_cart_icon.dart';
 import 'package:ecommerce/core/widgets/images/rounded_image.dart';
 import 'package:ecommerce/core/widgets/products/favorites/favorite_icon.dart';
 import 'package:ecommerce/core/widgets/products/product_price_and_add_to_cart.dart';
@@ -145,22 +146,7 @@ class TProductCardVertical extends ConsumerWidget {
                 ),
 
                 // add to cart
-                Container(
-                  decoration: const BoxDecoration(
-                    color: TColors.dark,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(TSizes.cardRadiusMd),
-                      bottomRight: Radius.circular(TSizes.productImageRadius),
-                    ),
-                  ),
-                  child: SizedBox(
-                    width: TSizes.iconLg * 1.2,
-                    height: TSizes.iconLg * 1.2,
-                    child: Center(
-                      child: const Icon(Icons.add, color: TColors.white),
-                    ),
-                  ),
-                ),
+                TAddToCartIcon(product: product),
               ],
             ),
           ],

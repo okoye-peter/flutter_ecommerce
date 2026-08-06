@@ -96,8 +96,8 @@ class SubCategoriesScreen extends ConsumerWidget {
                     return products.when(
                       loading: () =>
                           const Center(child: CircularProgressIndicator()),
-                      error: (error, stackTrace) => TErrorRetryWidget(
-                        message: error.toString(),
+                      error: (_, _) => TErrorRetryWidget(
+                        message: 'Something went wrong loading products.',
                         onRetry: () => ref.invalidate(
                           categoryProductsProvider(categoryId!),
                         ),
@@ -149,8 +149,8 @@ class _SubCategoryProducts extends ConsumerWidget {
         const SizedBox(height: TSizes.spaceBtwItem / 2),
         products.when(
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stackTrace) => TErrorRetryWidget(
-            message: error.toString(),
+          error: (_, _) => TErrorRetryWidget(
+            message: 'Something went wrong loading products.',
             onRetry: () =>
                 ref.invalidate(categoryProductsProvider(subCategory.id)),
           ),

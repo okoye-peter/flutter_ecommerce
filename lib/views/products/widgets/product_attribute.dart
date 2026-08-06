@@ -31,7 +31,10 @@ class TProductAttributes extends ConsumerWidget {
     final price = variation?.price ?? product.price;
     final salePrice = variation?.salePrice ?? product.salePrice;
     final hasSale = salePrice > 0 && salePrice < price;
-    final stock = variation?.stock ?? product.stock;
+    // Null until every attribute is chosen and a single variation resolves —
+    // falling back to the parent product's stock here would misreport a
+    // partially-selected variation as "In Stock".
+    final stock = variation?.stock;
     final description = (variation?.description?.isNotEmpty ?? false)
         ? variation!.description!
         : (product.description ?? '');
@@ -88,7 +91,11 @@ class TProductAttributes extends ConsumerWidget {
                           ),
                           const SizedBox(width: TSizes.spaceBtwItem),
                           Text(
-                            stock > 0 ? 'In Stock' : 'Out of Stock',
+                            stock == null
+                                ? 'Select all options'
+                                : stock > 0
+                                ? 'In Stock'
+                                : 'Out of Stock',
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ],
@@ -125,6 +132,7 @@ class TProductAttributes extends ConsumerWidget {
     final availableValues = controller.getAttributesAvailabilityInVariation(
       product.productVariations ?? [],
       attribute.name!,
+      selected,
     );
 
     return Padding(

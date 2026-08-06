@@ -87,8 +87,8 @@ class HomeScreen extends ConsumerWidget {
                       itemBuilder: (_, _) =>
                           const TProductCardVerticalShimmer(),
                     ),
-                    error: (error, stackTrace) => TErrorRetryWidget(
-                      message: error.toString(),
+                    error: (_, _) => TErrorRetryWidget(
+                      message: 'Something went wrong loading featured products.',
                       onRetry: () => ref.invalidate(featuredProductsProvider),
                     ),
                     data: (featuredProducts) {

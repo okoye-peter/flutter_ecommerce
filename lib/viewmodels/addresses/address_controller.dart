@@ -4,6 +4,7 @@ import 'package:ecommerce/core/providers/providers.dart';
 import 'package:ecommerce/core/widgets/loaders/snacks_loader.dart';
 import 'package:ecommerce/models/address_model.dart';
 import 'package:ecommerce/repositories/address_repository.dart';
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'address_controller.g.dart';
@@ -39,72 +40,64 @@ class AddressController extends _$AddressController {
     return _addressRepository.fetchAddresses(userId);
   }
 
-  Future<bool> addAddress(AddressModel address) async {
-    final userId = ref.read(authRepositoryProvider).currentUser?.uid;
-    if (userId == null) return false;
-
-    try {
-      await _addressRepository.addAddress(userId, address);
-      state = AsyncValue.data(await _fetchState());
-      TSnacksLoader.successSnackBar(
-        title: 'Success',
-        message: 'Address added.',
-      );
-      return true;
-    } catch (e) {
-      TSnacksLoader.errorSnackBar(title: 'Oh Snap!', message: e.toString());
-      return false;
-    }
+  /// Refetches the address list without showing a loading state, so a
+  /// mutation's own refetch doesn't flash the list to a spinner.
+  Future<void> _refreshState() async {
+    state = await AsyncValue.guard(_fetchState);
   }
 
-  Future<bool> updateAddress(AddressModel address) async {
+  /// Runs [operation] against the signed-in user's ID, refetching the
+  /// address list afterwards. Write failures and refetch failures are kept
+  /// separate: if [operation] throws, the refetch is skipped so a refetch
+  /// error can never be reported as if the write itself had failed.
+  Future<bool> _performMutation(
+    Future<void> Function(String userId) operation, {
+    String? successMessage,
+  }) async {
     final userId = ref.read(authRepositoryProvider).currentUser?.uid;
-    if (userId == null) return false;
-
-    try {
-      await _addressRepository.updateAddress(userId, address);
-      state = AsyncValue.data(await _fetchState());
-      TSnacksLoader.successSnackBar(
-        title: 'Success',
-        message: 'Address updated.',
+    if (userId == null) {
+      TSnacksLoader.errorSnackBar(
+        title: 'Oh Snap!',
+        message: 'You need to be signed in to do this.',
       );
-      return true;
-    } catch (e) {
-      TSnacksLoader.errorSnackBar(title: 'Oh Snap!', message: e.toString());
       return false;
     }
-  }
-
-  Future<bool> deleteAddress(String addressId) async {
-    final userId = ref.read(authRepositoryProvider).currentUser?.uid;
-    if (userId == null) return false;
 
     try {
-      await _addressRepository.deleteAddress(userId, addressId);
-      state = AsyncValue.data(await _fetchState());
-      TSnacksLoader.successSnackBar(
-        title: 'Success',
-        message: 'Address removed.',
-      );
-      return true;
+      await operation(userId);
     } catch (e) {
-      TSnacksLoader.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+      debugPrint('AddressController mutation failed: $e');
+      TSnacksLoader.errorSnackBar(
+        title: 'Oh Snap!',
+        message: 'Something went wrong. Please try again.',
+      );
       return false;
     }
+
+    await _refreshState();
+    if (successMessage != null) {
+      TSnacksLoader.successSnackBar(title: 'Success', message: successMessage);
+    }
+    return true;
   }
+
+  Future<bool> addAddress(AddressModel address) => _performMutation(
+    (userId) => _addressRepository.addAddress(userId, address),
+    successMessage: 'Address added.',
+  );
+
+  Future<bool> updateAddress(AddressModel address) => _performMutation(
+    (userId) => _addressRepository.updateAddress(userId, address),
+    successMessage: 'Address updated.',
+  );
+
+  Future<bool> deleteAddress(String addressId) => _performMutation(
+    (userId) => _addressRepository.deleteAddress(userId, addressId),
+    successMessage: 'Address removed.',
+  );
 
   /// Marks [addressId] as the selected address, unselecting any other.
-  Future<bool> selectAddress(String addressId) async {
-    final userId = ref.read(authRepositoryProvider).currentUser?.uid;
-    if (userId == null) return false;
-
-    try {
-      await _addressRepository.selectAddress(userId, addressId);
-      state = AsyncValue.data(await _fetchState());
-      return true;
-    } catch (e) {
-      TSnacksLoader.errorSnackBar(title: 'Oh Snap!', message: e.toString());
-      return false;
-    }
-  }
+  Future<bool> selectAddress(String addressId) => _performMutation(
+    (userId) => _addressRepository.selectAddress(userId, addressId),
+  );
 }

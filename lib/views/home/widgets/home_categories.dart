@@ -34,10 +34,10 @@ class THomeCategories extends ConsumerWidget {
           ),
         ),
       ),
-      error: (error, stackTrace) => SizedBox(
+      error: (_, _) => SizedBox(
         height: 80,
         child: TErrorRetryWidget(
-          message: error.toString(),
+          message: 'Something went wrong loading categories.',
           textColor: TColors.white,
           onRetry: () => ref.invalidate(categoriesProvider),
         ),

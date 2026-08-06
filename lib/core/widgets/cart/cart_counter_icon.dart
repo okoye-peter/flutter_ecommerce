@@ -1,7 +1,9 @@
 import 'package:ecommerce/core/constants/colors.dart';
+import 'package:ecommerce/viewmodels/carts/cart_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TCartCounterIcon extends StatelessWidget {
+class TCartCounterIcon extends ConsumerWidget {
   const TCartCounterIcon({
     super.key,
     required this.onPressed,
@@ -12,7 +14,9 @@ class TCartCounterIcon extends StatelessWidget {
   final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,  WidgetRef ref) {
+    ref.watch(cartControllerProvider);
+    final controller = ref.read(cartControllerProvider.notifier);
     return Stack(
       children: [
         IconButton(
@@ -31,7 +35,7 @@ class TCartCounterIcon extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                '2',
+                controller.getTotalCartItems(),
                 style: Theme.of(context).textTheme.labelLarge!.apply(
                   color: TColors.white,
                   fontSizeFactor: 0.8,

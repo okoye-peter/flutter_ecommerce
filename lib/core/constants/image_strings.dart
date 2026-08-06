@@ -90,9 +90,11 @@ class TImages {
   // - Payment Images
   static const String paystack = "assets/images/payments/paystack.jpeg";
   static const String stripe = "assets/images/payments/stripe.jpeg";
+  static const String flutterwave = "assets/images/payments/flutterwave.jpeg";
 
   // -- Lottie Animations
   static const String loadingAnimation = "assets/lottie/loading.json";
   static const String emptyWishlistAnimation =
       "assets/lottie/empty_wishlist.json";
+  static const String emptyCartAnimation = "assets/lottie/empty_cart.json";
 }

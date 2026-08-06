@@ -68,10 +68,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     return results.when(
       loading: () =>
           const Center(heightFactor: 4, child: CircularProgressIndicator()),
-      error: (error, _) => Center(
+      error: (_, _) => Center(
         heightFactor: 4,
         child: TErrorRetryWidget(
-          message: error.toString(),
+          message: 'Something went wrong searching.',
           onRetry: () => ref.invalidate(searchControllerProvider(_query)),
         ),
       ),

@@ -1,8 +1,10 @@
 import 'package:ecommerce/core/constants/sizes.dart';
 import 'package:ecommerce/core/router/app_router.dart';
 import 'package:ecommerce/core/widgets/appbar/appbar.dart';
+import 'package:ecommerce/viewmodels/carts/cart_controller.dart';
 import 'package:ecommerce/views/cart/widgets/cart_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class CartScreen extends StatelessWidget {
@@ -17,13 +19,24 @@ class CartScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(TSizes.defaultSpace),
-        child: TCartList(),
+        child: const TCartList(),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(TSizes.defaultSpace),
         child: ElevatedButton(
           onPressed: () => context.push(AppRoutes.checkout),
-          child: Text('Checkout \$250'),
+          child: Consumer(
+            builder: (_, ref, __) {
+              final cartAsync = ref.watch(cartControllerProvider);
+              return cartAsync.when(
+                data: (_) => Text(
+                  'Checkout \$${ref.read(cartControllerProvider.notifier).getTotalCartPrice()}',
+                ),
+                loading: () => const CircularProgressIndicator(),
+                error: (e, _) => const Text('Failed to load cart'),
+              );
+            },
+          ),
         ),
       ),
     );

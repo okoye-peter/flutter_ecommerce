@@ -38,8 +38,8 @@ class TPromoSlider extends ConsumerWidget {
           ),
         ],
       ),
-      error: (error, stackTrace) => TErrorRetryWidget(
-        message: error.toString(),
+      error: (_, _) => TErrorRetryWidget(
+        message: 'Something went wrong loading promotions.',
         onRetry: () => ref.invalidate(bannerControllerProvider),
       ),
       data: (bannerData) {

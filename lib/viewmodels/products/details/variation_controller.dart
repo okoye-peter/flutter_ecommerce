@@ -83,12 +83,26 @@ class VariationController extends _$VariationController {
     return true;
   }
 
+  /// Values [attributeName] can still take on given what's already picked
+  /// for the *other* attributes — a catalog rarely stocks every combination,
+  /// so e.g. once Color=Grey is chosen, Size must only offer the sizes that
+  /// actually exist for Grey, not every size that exists for any color.
   Set<String?> getAttributesAvailabilityInVariation(
     List<ProductVariationModel> variation,
     String attributeName,
+    Map<String, String> selectedAttributes,
   ) {
     return variation
-        .where((v) => v.attributeValues[attributeName] != null && v.attributeValues[attributeName]!.isNotEmpty && v.stock > 0)
+        .where((v) {
+          final value = v.attributeValues[attributeName];
+          if (value == null || value.isEmpty || v.stock <= 0) return false;
+
+          for (final entry in selectedAttributes.entries) {
+            if (entry.key == attributeName) continue;
+            if (v.attributeValues[entry.key] != entry.value) return false;
+          }
+          return true;
+        })
         .map((v) => v.attributeValues[attributeName])
         .toSet();
   }

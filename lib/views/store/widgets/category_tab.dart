@@ -33,8 +33,8 @@ class TCategoryTab extends ConsumerWidget {
 
           categoryProducts.when(
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stackTrace) => TErrorRetryWidget(
-              message: error.toString(),
+            error: (_, _) => TErrorRetryWidget(
+              message: 'Something went wrong loading products.',
               onRetry: () =>
                   ref.invalidate(categoryProductsProvider(category.id)),
             ),

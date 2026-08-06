@@ -45,8 +45,8 @@ class TStoreHeader extends ConsumerWidget {
             mainAxisExtent: 80,
             itemBuilder: (_, _) => const TBrandCardShimmer(),
           ),
-          error: (error, stackTrace) => TErrorRetryWidget(
-            message: error.toString(),
+          error: (_, _) => TErrorRetryWidget(
+            message: 'Something went wrong loading brands.',
             onRetry: () => ref.invalidate(brandControllerProvider),
           ),
           data: (brands) {

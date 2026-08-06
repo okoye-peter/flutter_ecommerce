@@ -45,4 +45,39 @@ class CartRepository {
       throw 'Something went wrong. Please try again';
     }
   }
+
+  Future<void> deleteCartItem(String userId, CartItemModel item) async {
+    try {
+      final docId = item.variationId.isNotEmpty
+          ? '${item.productId}_${item.variationId}'
+          : item.productId;
+
+      await db
+          .collection('Users')
+          .doc(userId)
+          .collection('Carts')
+          .doc(docId)
+          .delete();
+    } catch (e, s) {
+      debugPrint('CartRepository.deleteCartItem failed: $e\n$s');
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+  Future<void> clearCart(String userId) async {
+    try {
+      final cartCollection = db
+          .collection('Users')
+          .doc(userId)
+          .collection('Carts');
+
+      final snapshot = await cartCollection.get();
+      for (final doc in snapshot.docs) {
+        await doc.reference.delete();
+      }
+    } catch (e, s) {
+      debugPrint('CartRepository.clearCart failed: $e\n$s');
+      throw 'Something went wrong. Please try again';
+    }
+  }
 }

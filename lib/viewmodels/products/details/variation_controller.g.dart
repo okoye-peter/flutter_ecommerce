@@ -42,7 +42,7 @@ final class VariationControllerProvider
 }
 
 String _$variationControllerHash() =>
-    r'f3ab94ff2177b8cf2bcf00129f017d03ce428f8c';
+    r'ab9fe024802ea9241b9ed2cfea7c8e683069face';
 
 abstract class _$VariationController extends $Notifier<VariationState> {
   VariationState build();

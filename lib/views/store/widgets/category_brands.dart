@@ -24,8 +24,8 @@ class CategoryBrands extends ConsumerWidget {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (_, _) => const TBrandShowCaseShimmer(),
       ),
-      error: (error, stackTrace) => TErrorRetryWidget(
-        message: error.toString(),
+      error: (_, _) => TErrorRetryWidget(
+        message: 'Something went wrong loading brands.',
         onRetry: () => ref.invalidate(bransForCategoryProvider(category.id)),
       ),
       data: (brands) => brands.isEmpty
@@ -41,8 +41,8 @@ class CategoryBrands extends ConsumerWidget {
                 );
                 return brandProducts.when(
                   loading: () => const TBrandShowCaseShimmer(),
-                  error: (error, stackTrace) => TErrorRetryWidget(
-                    message: error.toString(),
+                  error: (_, _) => TErrorRetryWidget(
+                    message: 'Something went wrong loading products.',
                     onRetry: () =>
                         ref.invalidate(brandProductsProvider(brand.id, limit: 3)),
                   ),

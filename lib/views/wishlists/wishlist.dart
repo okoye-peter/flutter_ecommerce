@@ -49,10 +49,10 @@ class FavoriteScreen extends ConsumerWidget {
                   mainAxisSpacing: TSizes.gridViewSpacing,
                   crossAxisSpacing: TSizes.gridViewSpacing,
                 ),
-                itemBuilder: (_, __) => TProductCardVerticalShimmer(),
+                itemBuilder: (_, _) => TProductCardVerticalShimmer(),
               ),
-              error: (error, stackTrace) => TErrorRetryWidget(
-                message: error.toString(),
+              error: (_, _) => TErrorRetryWidget(
+                message: 'Something went wrong loading your wishlist.',
                 onRetry: () => ref.invalidate(favoriteProductsControllerProvider),
               ),
               data: (products) {
