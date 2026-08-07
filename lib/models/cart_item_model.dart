@@ -58,6 +58,21 @@ class CartItemModel {
     };
   }
 
+  factory CartItemModel.fromJson(Map<String, dynamic> json) {
+    return CartItemModel(
+      productId: json['ProductId'] ?? '',
+      title: json['Title'] ?? '',
+      price: (json['Price'] ?? 0.0).toDouble(),
+      image: json['Image'],
+      quantity: json['Quantity'] ?? 0,
+      variationId: json['VariationId'] ?? '',
+      brandName: json['BrandName'],
+      selectedVariation: json['SelectedVariation'] != null
+          ? Map<String, dynamic>.from(json['SelectedVariation'])
+          : null,
+    );
+  }
+
   factory CartItemModel.fromSnapShot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
 

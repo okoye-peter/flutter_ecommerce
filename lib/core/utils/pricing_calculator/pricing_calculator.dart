@@ -7,7 +7,7 @@ class TPricingCalculator {
     double shippingCost = getShippingCost(location);
 
     double totalPrice = productPrice + taxAmount + shippingCost;
-    return totalPrice;
+    return double.parse(totalPrice.toStringAsFixed(2));
   }
 
   static String calculateShippingCost(double productPrice, String location) {

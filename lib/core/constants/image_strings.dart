@@ -97,4 +97,8 @@ class TImages {
   static const String emptyWishlistAnimation =
       "assets/lottie/empty_wishlist.json";
   static const String emptyCartAnimation = "assets/lottie/empty_cart.json";
+  static const String orderConfirmedAnimation =
+      "assets/lottie/order_confirmed.json";
+  static const String paymentProcessingAnimation =
+      "assets/lottie/payment_processing.json";
 }

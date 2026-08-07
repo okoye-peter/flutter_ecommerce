@@ -58,6 +58,12 @@ class TFullScreenLoader {
       }
       completer.complete();
     });
+    // A post-frame callback only fires once a frame is actually rendered.
+    // If the loading dialog's animation (e.g. a non-looping Lottie clip) has
+    // already finished ticking, nothing schedules another frame, so the
+    // callback above would never run and this future would hang forever.
+    // Force one frame so the callback is guaranteed to fire.
+    WidgetsBinding.instance.scheduleFrame();
     return completer.future;
   }
 }

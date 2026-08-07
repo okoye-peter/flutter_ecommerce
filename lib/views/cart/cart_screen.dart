@@ -26,7 +26,7 @@ class CartScreen extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () => context.push(AppRoutes.checkout),
           child: Consumer(
-            builder: (_, ref, __) {
+            builder: (_, ref, _) {
               final cartAsync = ref.watch(cartControllerProvider);
               return cartAsync.when(
                 data: (_) => Text(

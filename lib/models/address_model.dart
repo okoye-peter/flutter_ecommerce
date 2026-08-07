@@ -54,6 +54,23 @@ class AddressModel {
     };
   }
 
+  factory AddressModel.fromJson(Map<String, dynamic> json) {
+    return AddressModel(
+      id: json['Id'] ?? '',
+      name: json['Name'] ?? '',
+      phoneNumber: json['PhoneNumber'] ?? '',
+      street: json['Street'] ?? '',
+      city: json['City'] ?? '',
+      state: json['State'] ?? '',
+      postalCode: json['PostalCode'] ?? '',
+      country: json['Country'] ?? '',
+      dateTime: json['DateTime'] != null
+          ? (json['DateTime'] as Timestamp).toDate()
+          : null,
+      isSelectedAddress: json['SelectedAddress'] ?? false,
+    );
+  }
+
   factory AddressModel.fromSnapShot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
 

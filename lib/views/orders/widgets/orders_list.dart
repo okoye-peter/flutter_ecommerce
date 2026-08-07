@@ -1,123 +1,81 @@
-import 'package:ecommerce/core/constants/colors.dart';
 import 'package:ecommerce/core/constants/sizes.dart';
-import 'package:ecommerce/core/helpers/helper_functions.dart';
-import 'package:ecommerce/core/widgets/products/rounded_container.dart';
+import 'package:ecommerce/core/widgets/loaders/error_retry_widget.dart';
+import 'package:ecommerce/viewmodels/orders/order_controller.dart';
+import 'package:ecommerce/views/orders/widgets/order_item.dart';
+import 'package:ecommerce/views/orders/widgets/order_item_shimmer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TOrderListItems extends StatelessWidget {
+class TOrderListItems extends ConsumerStatefulWidget {
   const TOrderListItems({super.key});
 
   @override
+  ConsumerState<TOrderListItems> createState() => _TOrderListItemsState();
+}
+
+class _TOrderListItemsState extends ConsumerState<TOrderListItems> {
+  final _scrollController = ScrollController();
+  bool _isLoadingMore = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_isLoadingMore) return;
+
+    final position = _scrollController.position;
+    if (position.maxScrollExtent <= 0) return;
+    if (position.pixels < position.maxScrollExtent - 200) return;
+
+    final notifier = ref.read(orderControllerProvider.notifier);
+    if (!notifier.hasMore) return;
+
+    setState(() => _isLoadingMore = true);
+    notifier.fetchMoreOrders().whenComplete(() {
+      if (!mounted) return;
+      setState(() => _isLoadingMore = false);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final dark = THelperFunctions.isDarkMode(context);
-    return ListView.separated(
-      itemBuilder: (_, _) => TRoundedContainer(
-        showBorder: true,
-        backgroundColor: dark ? TColors.dark : TColors.light,
-        padding: const EdgeInsets.all(TSizes.md),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                //
-                Icon(Icons.local_shipping),
-                SizedBox(width: TSizes.spaceBtwItem / 2),
+    final ordersAsyncValue = ref.watch(orderControllerProvider);
 
-                // Status & Date
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Processing',
-                        style: Theme.of(context).textTheme.bodyLarge!.apply(
-                          color: TColors.primary,
-                          fontWeightDelta: 1,
-                        ),
-                      ),
-                      Text(
-                        '07 Apr, 2024',
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                    ],
-                  ),
-                ),
-
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.arrow_forward_ios, size: TSizes.iconSm),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: TSizes.spaceBtwItem),
-            Row(
-              children: [
-                Expanded(
-                  child: Row(
-                    children: [
-                      //
-                      Icon(Icons.sell_outlined),
-                      SizedBox(width: TSizes.spaceBtwItem / 2),
-
-                      // Status & Date
-                      Expanded(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Order',
-                              style: Theme.of(context).textTheme.labelMedium,
-                            ),
-                            Text(
-                              '[#120EAFT1]',
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                Expanded(
-                  child: Row(
-                    children: [
-                      //
-                      Icon(Icons.calendar_month_outlined),
-                      SizedBox(width: TSizes.spaceBtwItem / 2),
-
-                      // Status & Date
-                      Expanded(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Shipping Date',
-                              style: Theme.of(context).textTheme.labelMedium,
-                            ),
-                            Text(
-                              '03 Feb, 2025',
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+    return ordersAsyncValue.when(
+      loading: () => ListView.separated(
+        itemBuilder: (_, _) => const OrderItemShimmer(),
+        separatorBuilder: (_, _) => const SizedBox(height: TSizes.spaceBtwItem),
+        itemCount: 6,
       ),
-      separatorBuilder: (_, _) => const SizedBox(height: TSizes.spaceBtwItem),
-      itemCount: 5,
-      shrinkWrap: true,
+      error: (error, trace) => TErrorRetryWidget(
+        message: 'something went wrong',
+        onRetry: () => ref.invalidate(orderControllerProvider),
+      ),
+      data: (orders) => ListView.separated(
+        controller: _scrollController,
+        itemBuilder: (_, int index) {
+          if (index >= orders.length) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: TSizes.spaceBtwItem),
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
+          final order = orders[index];
+          return OrderItem(key: ValueKey(order.id), order: order);
+        },
+        separatorBuilder: (_, _) => const SizedBox(height: TSizes.spaceBtwItem),
+        itemCount: orders.length + (_isLoadingMore ? 1 : 0),
+      ),
     );
   }
 }

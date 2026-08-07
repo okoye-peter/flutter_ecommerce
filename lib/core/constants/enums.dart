@@ -1,11 +1,6 @@
 enum TextSizes { small, medium, large }
 
-class OrderStatus {
-  OrderStatus._();
-  static const String processing = 'processing';
-  static const String shipped = 'shipped';
-  static const String delivered = 'delivered';
-}
+enum OrderStatus { processing, shipped, delivered }
 
 class PaymentMethods {
   PaymentMethods._();
